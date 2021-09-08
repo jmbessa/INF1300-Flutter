@@ -128,12 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0)),
                     color: Colors.blue,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image(image: AssetImage(images[index])),
-                          Text(servicos[index])
-                        ]),
+                    child: Image(
+                        image: AssetImage(images[index]), fit: BoxFit.cover),
                   ),
                 ),
               ),
