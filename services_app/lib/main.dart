@@ -123,13 +123,25 @@ class _MyHomePageState extends State<MyHomePage> {
               child: FractionallySizedBox(
                 heightFactor: 0.9,
                 widthFactor: 0.9,
-                child: Container(
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    color: Colors.blue,
-                    child: Image(
-                        image: AssetImage(images[index]), fit: BoxFit.cover),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0)),
+                  color: Colors.blue,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(images[index]),
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
+                      ),
+                    ),
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(servicos[index],
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                backgroundColor: Colors.black))),
                   ),
                 ),
               ),
