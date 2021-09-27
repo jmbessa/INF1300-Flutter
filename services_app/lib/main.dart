@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'secondPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,13 +23,19 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/': (context) => const MyHomePage(title: 'Pagina inicial'),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/second': (context) => const SecondScreen(),
+      },
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -119,7 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
         children: List.generate(servicos.length, (index) {
           return Center(
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                // Navigate to the second screen using a named route.
+                Navigator.pushNamed(context, '/second');
+              },
               child: FractionallySizedBox(
                 heightFactor: 0.9,
                 widthFactor: 0.9,
