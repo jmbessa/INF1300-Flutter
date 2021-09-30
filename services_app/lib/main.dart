@@ -95,7 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: SideMenu(),
+      endDrawer: Container(
+        width: 250,
+        child: SideMenu(),
+      ),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
