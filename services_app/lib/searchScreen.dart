@@ -9,7 +9,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   DateTime? date;
-  String dropdownValue = 'Manhã';
+  String? dropdownValue;
 
   String getText() {
     if (date == null) {
@@ -38,34 +38,69 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(32),
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            Text("Data", style: defaultTheme.textTheme.bodyText1),
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Data", style: defaultTheme.textTheme.bodyText1)),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                   onPressed: () => pickDate(context),
-                  child:
-                      Text(getText(), style: defaultTheme.textTheme.bodyText1)),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      side: BorderSide(width: 1)),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        getText(),
+                        style: defaultTheme.textTheme.bodyText2,
+                        textAlign: TextAlign.start,
+                      ))),
             ),
-            DropdownButton<String>(
-              value: dropdownValue,
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue = newValue!;
-                });
-              },
-              items: <String>['Manhã', 'Tarde', 'Noite']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            SizedBox(height: 10),
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Turno", style: defaultTheme.textTheme.bodyText1)),
+            SizedBox(
+              width: double.infinity,
+              child: DropdownButtonFormField<String>(
+                isExpanded: true,
+                value: dropdownValue,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius:
+                            const BorderRadius.all(const Radius.circular(5)))),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                  });
+                },
+                hint: Container(
+                  child: Text(
+                    "Escolha o turno",
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                items: <String>['Manhã', 'Tarde', 'Noite']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Container(
+                      child: Text(
+                        value,
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
+            Spacer(),
             ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/list'),
+                onPressed: () => Navigator.pushNamed(context, '/profile'),
                 child: Text("Buscar", style: defaultTheme.textTheme.bodyText1)),
           ],
         ),

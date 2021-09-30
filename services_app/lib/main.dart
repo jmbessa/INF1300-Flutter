@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'searchScreen.dart';
+import 'profileScreen.dart';
 import 'themes.dart';
+import 'widgets/sideMenu.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/second': (context) => SearchScreen(),
         '/list': (context) => SearchScreen(),
+        '/profile': (context) => ProfileScreen(),
       },
     );
   }
@@ -28,15 +31,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -44,7 +38,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
+  double initial = 0;
   List<String> servicos = [
     "Pintura",
     "Limpeza doméstica",
@@ -84,6 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
+    if (index == 3) {
+      _scaffoldKey.currentState?.openEndDrawer();
+    }
   }
 
   @override
@@ -95,11 +94,14 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: SideMenu(),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
+          actions: <Widget>[Container()],
           backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: Colors.black,
@@ -109,46 +111,58 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: GridView.count(
-        // Create a grid with 2 columns. If you change the scrollDirection to
-        // horizontal, this produces 2 rows.
-        crossAxisCount: 2,
-        // Generate 100 widgets that display their index in the List.
-        children: List.generate(servicos.length, (index) {
-          return Center(
-            child: GestureDetector(
-              onTap: () {
-                // Navigate to the second screen using a named route.
-                Navigator.pushNamed(context, '/second');
-              },
-              child: FractionallySizedBox(
-                heightFactor: 0.9,
-                widthFactor: 0.9,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
-                  color: Colors.yellow,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(images[index]),
-                        fit: BoxFit.cover,
-                        alignment: Alignment.topCenter,
+      body: GestureDetector(
+        onPanStart: (DragStartDetails details) {
+          initial = details.globalPosition.dx;
+        },
+        onPanUpdate: (DragUpdateDetails details) {
+          double distance = details.globalPosition.dx - initial;
+          if (distance < -20) _scaffoldKey.currentState?.openEndDrawer();
+        },
+        onPanEnd: (DragEndDetails details) {
+          initial = 0;
+        },
+        child: GridView.count(
+          // Create a grid with 2 columns. If you change the scrollDirection to
+          // horizontal, this produces 2 rows.
+          crossAxisCount: 2,
+          // Generate 100 widgets that display their index in the List.
+          children: List.generate(servicos.length, (index) {
+            return Center(
+              child: GestureDetector(
+                onTap: () {
+                  // Navigate to the second screen using a named route.
+                  Navigator.pushNamed(context, '/second');
+                },
+                child: FractionallySizedBox(
+                  heightFactor: 0.9,
+                  widthFactor: 0.9,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    color: Colors.yellow,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(images[index]),
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        ),
                       ),
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Text(servicos[index],
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  backgroundColor: Colors.black))),
                     ),
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Text(servicos[index],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                backgroundColor: Colors.black))),
                   ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

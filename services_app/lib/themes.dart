@@ -6,9 +6,12 @@ ThemeData _buildDefaultTheme() {
   return ThemeData(
     primaryColor: Colors.teal,
     textTheme: TextTheme(
-        bodyText1: const TextStyle(
-      fontSize: 18,
-      fontFamily: "Helvetica",
-    )),
+      bodyText1: const TextStyle(
+        fontSize: 18,
+        fontFamily: "Helvetica",
+        fontWeight: FontWeight.bold,
+      ),
+      bodyText2: const TextStyle(fontSize: 15, fontFamily: "Helvetica"),
+    ),
   );
 }
