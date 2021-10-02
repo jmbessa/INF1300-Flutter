@@ -5,6 +5,7 @@ final ThemeData defaultTheme = _buildDefaultTheme();
 ThemeData _buildDefaultTheme() {
   return ThemeData(
     primaryColor: Colors.teal,
+    backgroundColor: Colors.black,
     textTheme: TextTheme(
       bodyText1: const TextStyle(
         fontSize: 18,
