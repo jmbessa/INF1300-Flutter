@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:services_app/workers.dart';
 import 'themes.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({Key? key}) : super(key: key);
+  final List<Worker> workers;
+
+  SearchScreen({required this.workers});
+
+  //SearchScreen({Key? key, required this.workers}) : super(key: key);
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -21,6 +26,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final routeData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, List<Worker>>;
+    final listWorkers = routeData['workers'];
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -98,10 +106,17 @@ class _SearchScreenState extends State<SearchScreen> {
                 }).toList(),
               ),
             ),
-            Spacer(),
-            ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/profile'),
-                child: Text("Buscar", style: defaultTheme.textTheme.bodyText1)),
+            SizedBox(height: 40),
+            Expanded(
+              child: Container(
+                  child: ListView.builder(
+                      itemCount: listWorkers!.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                            title: Text(listWorkers[index].name),
+                            subtitle: Text('subtitulo'));
+                      })),
+            )
           ],
         ),
       ),

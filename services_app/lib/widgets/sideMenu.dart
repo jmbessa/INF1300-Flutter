@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// ignore: must_be_immutable
 class SideMenu extends StatelessWidget {
   ImagePicker picker = ImagePicker();
 
