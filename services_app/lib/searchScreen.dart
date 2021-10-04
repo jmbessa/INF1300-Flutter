@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:services_app/workers.dart';
+import 'package:intl/intl.dart';
 import 'themes.dart';
+import 'workers.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({Key? key}) : super(key: key);
+  final List<Worker> workers;
+
+  SearchScreen({Key? key, required this.workers}) : super(key: key);
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -10,6 +16,11 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   DateTime? date;
   String? dropdownValue;
+  ScrollController controller = ScrollController();
+  bool closeTopContainer = false;
+  double topContainer = 0;
+
+  List<Widget> itemsData = [];
 
   String getText() {
     if (date == null) {
@@ -21,6 +32,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final routeData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, List<Worker>>;
+    final listWorkers = routeData['workers'];
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -98,14 +112,82 @@ class _SearchScreenState extends State<SearchScreen> {
                 }).toList(),
               ),
             ),
-            Spacer(),
-            ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/profile'),
-                child: Text("Buscar", style: defaultTheme.textTheme.bodyText1)),
+            SizedBox(height: 40),
+            Expanded(
+              child: Container(
+                  child: new ListView.builder(
+                      itemCount: listWorkers!.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          buildWorkerCard(context, index, listWorkers))),
+            )
           ],
         ),
       ),
     );
+  }
+
+  Widget buildWorkerCard(
+      BuildContext context, int index, List<Worker> listWorkers) {
+    final work = listWorkers[index];
+    final img = "assets/2318271-icone-do-perfil-do-usuario-grátis-vetor.jpg";
+    return new Container(
+        height: 145,
+        margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 5.0),
+            ]),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    work.name,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        work.evaluation.toString(),
+                        style:
+                            const TextStyle(fontSize: 17, color: Colors.grey),
+                      ),
+                      Icon(
+                        Icons.star,
+                        size: 14,
+                        color: Colors.grey,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    "\$${work.price.toStringAsFixed(2)}",
+                    style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              Image.asset(
+                img,
+                height: 120,
+              )
+            ],
+          ),
+        ));
   }
 
   Future pickDate(BuildContext context) async {

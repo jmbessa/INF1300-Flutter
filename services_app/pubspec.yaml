@@ -29,6 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   image_picker: ^0.8.4+1
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,7 @@ flutter:
     - assets/b58b8561-dia-do-mecanico.jpg
     - assets/faz-tudo.jpg
     - assets/limpeza.jpg
+    - assets/2318271-icone-do-perfil-do-usuario-grátis-vetor.jpg
     - assets/profilePicture.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

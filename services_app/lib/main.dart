@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:services_app/workers.dart';
 import 'searchScreen.dart';
 import 'profileScreen.dart';
 import 'themes.dart';
@@ -20,8 +21,9 @@ class MyApp extends StatelessWidget {
         // When navigating to the "/" route, build the FirstScreen widget.
         '/': (context) => const MyHomePage(title: 'Pagina inicial'),
         // When navigating to the "/second" route, build the SecondScreen widget.
-        '/second': (context) => SearchScreen(),
-        '/list': (context) => SearchScreen(),
+        '/second': (context) => SearchScreen(
+              workers: [],
+            ),
         '/profile': (context) => ProfileScreen(),
       },
     );
@@ -45,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
     "Pintura",
     "Limpeza doméstica",
     "Mecânica",
-    "Faz Tudo"
+    "Serviços Residenciais"
   ];
 
   List<String> images = [
@@ -134,8 +136,13 @@ class _MyHomePageState extends State<MyHomePage> {
             return Center(
               child: GestureDetector(
                 onTap: () {
+                  Categorias categoriaAtual = Categorias.values[index];
+                  List<Worker> workers = WORKERS
+                      .where((element) => element.category == categoriaAtual)
+                      .toList();
                   // Navigate to the second screen using a named route.
-                  Navigator.pushNamed(context, '/second');
+                  Navigator.pushNamed(context, '/second',
+                      arguments: {'workers': workers});
                 },
                 child: FractionallySizedBox(
                   heightFactor: 0.9,
