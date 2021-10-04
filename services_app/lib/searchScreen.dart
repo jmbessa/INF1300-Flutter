@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:services_app/workers.dart';
+import 'package:intl/intl.dart';
 import 'themes.dart';
+import 'workers.dart';
 
 class SearchScreen extends StatefulWidget {
   final List<Worker> workers;
 
-  SearchScreen({required this.workers});
+  SearchScreen({Key? key, required this.workers}) : super(key: key);
 
-  //SearchScreen({Key? key, required this.workers}) : super(key: key);
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -109,15 +110,61 @@ class _SearchScreenState extends State<SearchScreen> {
             SizedBox(height: 40),
             Expanded(
               child: Container(
-                  child: ListView.builder(
+                  child: new ListView.builder(
                       itemCount: listWorkers!.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                            title: Text(listWorkers[index].name),
-                            subtitle: Text('subtitulo'));
-                      })),
+                      itemBuilder: (BuildContext context, int index) =>
+                          buildWorkerCard(context, index, listWorkers))),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildWorkerCard(
+      BuildContext context, int index, List<Worker> listWorkers) {
+    final work = listWorkers[index];
+    return new Container(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 2.0, bottom: 4.0),
+                child: Row(children: <Widget>[
+                  Text(
+                    work.name,
+                    style: new TextStyle(fontSize: 30.0),
+                  ),
+                  Spacer(),
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0, bottom: 20.0),
+                child: Row(children: <Widget>[
+                  Text("${work.evaluation.toString()}"),
+                  Icon(
+                    Icons.star,
+                    size: 16,
+                  ),
+                  Spacer(),
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 2.0, bottom: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "\$${work.price.toStringAsFixed(2)}",
+                      style: new TextStyle(fontSize: 30.0),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
