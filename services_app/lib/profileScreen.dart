@@ -19,28 +19,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        endDrawer: SideMenu(),
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           elevation: 0,
-          centerTitle: true,
           title: Text(
-            'CUSTOM SLIDER',
-            style: TextStyle(color: positiveColor),
+            'Nome',
           ),
         ),
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        body: Column(
           children: <Widget>[
-            new Text(
-              percentage.round().toString() + '%',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 70,
-                color: positiveColor,
+            Container(
+              height: 120.0,
+              width: 120.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/profilePicture.png'),
+                  fit: BoxFit.fill,
+                ),
+                shape: BoxShape.rectangle,
               ),
             ),
             GestureDetector(
@@ -58,42 +55,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPanEnd: (DragEndDetails details) {
                 initial = 0;
               },
-              child: CustomSlider(
-                percentage: this.percentage,
-                positiveColor: positiveColor,
-                negativeColor: negativeColor,
-              ),
             ),
           ],
-        )));
-  }
-}
-
-class CustomSlider extends StatelessWidget {
-  double totalWidth = 200;
-  double? percentage;
-  Color? positiveColor;
-  Color? negativeColor;
-
-  CustomSlider({this.percentage, this.positiveColor, this.negativeColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: totalWidth + 4,
-      height: 30,
-      decoration: BoxDecoration(
-          color: negativeColor,
-          border: Border.all(color: Colors.black, width: 2)),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Container(
-            color: positiveColor,
-            width: (percentage! / 100) * totalWidth,
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }
