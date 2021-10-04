@@ -16,6 +16,11 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   DateTime? date;
   String? dropdownValue;
+  ScrollController controller = ScrollController();
+  bool closeTopContainer = false;
+  double topContainer = 0;
+
+  List<Widget> itemsData = [];
 
   String getText() {
     if (date == null) {
@@ -124,50 +129,65 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget buildWorkerCard(
       BuildContext context, int index, List<Worker> listWorkers) {
     final work = listWorkers[index];
+    final img = "assets/2318271-icone-do-perfil-do-usuario-grátis-vetor.jpg";
     return new Container(
-      child: Card(
+        height: 145,
+        margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 5.0),
+            ]),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 2.0, bottom: 4.0),
-                child: Row(children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
                   Text(
                     work.name,
-                    style: new TextStyle(fontSize: 30.0),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  Spacer(),
-                ]),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0, bottom: 20.0),
-                child: Row(children: <Widget>[
-                  Text("${work.evaluation.toString()}"),
-                  Icon(
-                    Icons.star,
-                    size: 16,
+                  SizedBox(
+                    height: 20,
                   ),
-                  Spacer(),
-                ]),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        work.evaluation.toString(),
+                        style:
+                            const TextStyle(fontSize: 17, color: Colors.grey),
+                      ),
+                      Icon(
+                        Icons.star,
+                        size: 14,
+                        color: Colors.grey,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    "\$${work.price.toStringAsFixed(2)}",
+                    style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 2.0, bottom: 8.0),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      "\$${work.price.toStringAsFixed(2)}",
-                      style: new TextStyle(fontSize: 30.0),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              ),
+              Image.asset(
+                img,
+                height: 120,
+              )
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Future pickDate(BuildContext context) async {
