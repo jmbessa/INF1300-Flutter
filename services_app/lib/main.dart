@@ -109,10 +109,10 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: <Widget>[Container()],
           backgroundColor: Colors.transparent,
           elevation: 0,
-          foregroundColor: Colors.black,
+          foregroundColor: defaultTheme.backgroundColor,
           title: Text(
             "Categorias",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: defaultTheme.backgroundColor),
           ),
         ),
       ),

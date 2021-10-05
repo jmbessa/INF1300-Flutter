@@ -114,12 +114,16 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             SizedBox(height: 40),
             Expanded(
+                child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
               child: Container(
                   child: new ListView.builder(
                       itemCount: listWorkers!.length,
                       itemBuilder: (BuildContext context, int index) =>
                           buildWorkerCard(context, index, listWorkers))),
-            )
+            )),
           ],
         ),
       ),
