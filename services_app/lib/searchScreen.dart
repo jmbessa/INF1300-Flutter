@@ -17,8 +17,8 @@ class _SearchScreenState extends State<SearchScreen> {
   DateTime? date;
   String? dropdownValue;
   ScrollController controller = ScrollController();
-  bool closeTopContainer = false;
-  double topContainer = 0;
+  List<String> turnos = ['Manhã', 'Tarde', 'Noite'];
+  late String turnoSelecionado;
 
   List<Widget> itemsData = [];
 
@@ -34,7 +34,26 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final routeData =
         ModalRoute.of(context)!.settings.arguments as Map<String, List<Worker>>;
-    final listWorkers = routeData['workers'];
+    var listWorkers = routeData['workers'];
+
+    var turno;
+
+    if (dropdownValue == "Manhã")
+      turno = Turnos.manha;
+    else if (dropdownValue == "Tarde")
+      turno = Turnos.tarde;
+    else
+      turno = Turnos.noite;
+
+    List<Worker> newList;
+
+    if (dropdownValue != null)
+      newList = listWorkers!
+          .where((element) => element.turn.contains(turno))
+          .toList();
+    else
+      newList = listWorkers!;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -98,8 +117,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     textAlign: TextAlign.start,
                   ),
                 ),
-                items: <String>['Manhã', 'Tarde', 'Noite']
-                    .map<DropdownMenuItem<String>>((String value) {
+                items: turnos.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Container(
@@ -116,9 +134,9 @@ class _SearchScreenState extends State<SearchScreen> {
             Expanded(
               child: Container(
                   child: new ListView.builder(
-                      itemCount: listWorkers!.length,
+                      itemCount: newList.length,
                       itemBuilder: (BuildContext context, int index) =>
-                          buildWorkerCard(context, index, listWorkers))),
+                          buildWorkerCard(context, index, newList))),
             )
           ],
         ),
