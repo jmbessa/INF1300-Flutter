@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'themes.dart';
 import 'widgets/sideMenu.dart';
+import 'workers.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+  final Worker? worker;
+
+  ProfileScreen({Key? key, this.worker}) : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -26,6 +29,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final routeData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, Worker>;
+    var worker = routeData['worker'];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -33,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: BackButton(color: defaultTheme.backgroundColor),
         elevation: 0,
         title: Text(
-          'Nome',
+          worker!.name,
           style: TextStyle(color: defaultTheme.backgroundColor),
         ),
       ),
@@ -56,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Preco",
+                  '\$${worker.price.toStringAsFixed(2)}',
                   style: const TextStyle(
                       fontSize: 20,
                       color: Colors.black,
@@ -71,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      "4.8",
+                      worker.evaluation.toString(),
                       style: const TextStyle(fontSize: 17, color: Colors.grey),
                     ),
                     Icon(
