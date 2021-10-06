@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:services_app/workers.dart';
 import 'searchScreen.dart';
 import 'profileScreen.dart';
+import 'confirmationScreen.dart';
 import 'themes.dart';
 import 'widgets/sideMenu.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
               workers: [],
             ),
         '/profile': (context) => ProfileScreen(),
+        '/confirmation': (context) => ConfirmationScreen(),
       },
     );
   }

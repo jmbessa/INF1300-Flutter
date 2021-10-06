@@ -3,13 +3,13 @@ import 'themes.dart';
 import 'widgets/sideMenu.dart';
 import 'package:photo_view/photo_view.dart';
 
-class ProfileScreen extends StatefulWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+class ConfirmationScreen extends StatefulWidget {
+  ConfirmationScreen({Key? key}) : super(key: key);
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _ConfirmationScreenState createState() => _ConfirmationScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ConfirmationScreenState extends State<ConfirmationScreen> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Color positiveColor = new Color(0xFFEF0078);
   Color negativeColor = new Color(0xFFFFFFFF);
@@ -148,19 +148,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               )
                             ],
                           ))),
-            ),
-            SizedBox(height: 70)
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.red,
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/confirmation');
+          Navigator.pushNamed(context, '/profile');
         },
-        label: Text("Agendar"),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 

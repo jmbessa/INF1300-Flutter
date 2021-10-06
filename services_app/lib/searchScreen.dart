@@ -141,7 +141,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemCount: newList.length,
                       itemBuilder: (BuildContext context, int index) =>
                           buildWorkerCard(context, index, newList))),
-            )
+            )),
           ],
         ),
       ),
