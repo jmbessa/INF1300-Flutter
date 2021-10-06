@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:services_app/workers.dart';
+import 'infoScreen.dart';
 import 'searchScreen.dart';
 import 'profileScreen.dart';
 import 'confirmationScreen.dart';
@@ -25,8 +26,9 @@ class MyApp extends StatelessWidget {
         '/second': (context) => SearchScreen(
               workers: [],
             ),
-        '/profile': (context) => ProfileScreen(),
+        '/profile': (context) => ProfileScreen(worker: null),
         '/confirmation': (context) => ConfirmationScreen(),
+        '/info': (context) => InfoScreen(),
       },
     );
   }
@@ -154,21 +156,33 @@ class _MyHomePageState extends State<MyHomePage> {
                         borderRadius: BorderRadius.circular(5.0)),
                     color: Colors.yellow,
                     child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(images[index]),
-                          fit: BoxFit.cover,
-                          alignment: Alignment.topCenter,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(images[index]),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                          ),
                         ),
-                      ),
-                      child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(servicos[index],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                        child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Stack(children: [
+                              Text(servicos[index],
+                                  style: TextStyle(
+                                      fontFamily: defaultTheme
+                                          .textTheme.bodyText1!.fontFamily,
+                                      fontWeight: FontWeight.bold,
+                                      backgroundColor: Colors.transparent,
+                                      foreground: Paint()
+                                        ..style = PaintingStyle.stroke
+                                        ..strokeWidth = 2
+                                        ..color = Color.fromRGBO(0, 0, 0, 1))),
+                              Text(
+                                servicos[index],
+                                style: TextStyle(
                                   color: Colors.white,
-                                  backgroundColor: Colors.black))),
-                    ),
+                                ),
+                              ),
+                            ]))),
                   ),
                 ),
               ),

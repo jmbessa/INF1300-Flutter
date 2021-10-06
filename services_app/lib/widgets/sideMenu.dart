@@ -9,6 +9,12 @@ class SideMenu extends StatefulWidget {
   _SideMenuState createState() => _SideMenuState();
 }
 
+XFile? profileImage;
+String profileImagePath = "assets/materiais-para-pintura.jpg";
+
+XFile? backgroundImage;
+String backgroundImagePath = "assets/materiais-para-pintura.jpg";
+
 class _SideMenuState extends State<SideMenu> {
   ImagePicker picker = ImagePicker();
 
@@ -19,15 +25,21 @@ class _SideMenuState extends State<SideMenu> {
     "assets/faz-tudo.jpg",
   ];
 
-  XFile? _image;
-  String _imagePath = "assets/materiais-para-pintura.jpg";
-
-  Future getImage() async {
+  Future getProfileImage() async {
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _image = pickedFile;
-      _imagePath = _image!.path;
+      profileImage = pickedFile;
+      profileImagePath = profileImage!.path;
+    });
+  }
+
+  Future getBackgroundImage() async {
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      backgroundImage = pickedFile;
+      backgroundImagePath = profileImage!.path;
     });
   }
 
@@ -50,14 +62,14 @@ class _SideMenuState extends State<SideMenu> {
                   SizedBox(height: 2),
                   GestureDetector(
                     onTap: () async {
-                      getImage();
+                      getProfileImage();
                     },
                     child: CircleAvatar(
                       radius: 50,
                       backgroundColor: defaultTheme.primaryColor,
-                      child: _image != null
+                      child: profileImage != null
                           ? ClipOval(
-                              child: Image.file(File(_imagePath),
+                              child: Image.file(File(profileImagePath),
                                   fit: BoxFit.cover, width: 90, height: 90))
                           : Container(
                               decoration: BoxDecoration(
@@ -76,6 +88,9 @@ class _SideMenuState extends State<SideMenu> {
               ),
               decoration: BoxDecoration(
                 color: defaultTheme.backgroundColor,
+                image: DecorationImage(
+                    image: FileImage(File(backgroundImagePath)),
+                    fit: BoxFit.cover),
               )),
           ListTile(
             leading: Icon(Icons.input),
@@ -85,7 +100,9 @@ class _SideMenuState extends State<SideMenu> {
           ListTile(
             leading: Icon(Icons.verified_user),
             title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () {
+              Navigator.pushNamed(context, '/info');
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),
