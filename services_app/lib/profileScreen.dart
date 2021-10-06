@@ -154,11 +154,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.red,
+        backgroundColor: defaultTheme.primaryColor,
         onPressed: () {
           Navigator.pushNamed(context, '/confirmation');
         },
-        label: Text("Agendar"),
+        label: Text(
+          'Agendar',
+          style: buttonTheme.textTheme.bodyText1,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

@@ -10,160 +10,110 @@ class ConfirmationScreen extends StatefulWidget {
 }
 
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  Color positiveColor = new Color(0xFFEF0078);
-  Color negativeColor = new Color(0xFFFFFFFF);
-  double percentage = 0;
+  late String _address;
+  late String _date;
+  late String turn;
+  late String? _hour;
+  late String _estimatedTime;
+  late String _price;
+  late String _observation;
+  //String _phoneNumber;
 
-  double initial = 0;
+  Widget _buildAddress() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Address'),
+      maxLength: 40,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Address is Required';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        _address = value!;
+      },
+    );
+  }
 
-  List<String> images = [
-    "assets/materiais-para-pintura.jpg",
-    "assets/limpeza.jpg",
-    "assets/b58b8561-dia-do-mecanico.jpg",
-    "assets/faz-tudo.jpg",
-  ];
+  Widget _buildDate() {
+    return Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Preco",
+            style: const TextStyle(
+                fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.fromLTRB(1, 0, 0, 9),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            children: <Widget>[
+              Text(
+                "4.8",
+                style: const TextStyle(fontSize: 17, color: Colors.black),
+              ),
+              Icon(
+                Icons.star,
+                size: 14,
+                color: Colors.grey,
+              )
+            ],
+          ),
+        ),
+      ),
+    ]);
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: defaultTheme.backgroundColor,
-        leading: BackButton(color: defaultTheme.backgroundColor),
-        elevation: 0,
-        title: Text(
-          'Nome',
-          style: TextStyle(color: defaultTheme.backgroundColor),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.0),
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          foregroundColor: Colors.black,
+          leading: BackButton(color: Colors.black),
+          title: Text(
+            "Confirmação de agendamento",
+            style: TextStyle(color: Colors.black),
+          ),
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 300.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/profilePicture.png'),
-                  fit: BoxFit.fill,
-                ),
-                shape: BoxShape.rectangle,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Preco",
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 9),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      "4.8",
-                      style: const TextStyle(fontSize: 17, color: Colors.grey),
+        child: Container(
+          margin: EdgeInsets.all(25),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _buildAddress(),
+                _buildDate(),
+                SizedBox(height: 100),
+                FloatingActionButton.extended(
+                    label: Text(
+                      'Submit',
+                      style: buttonTheme.textTheme.bodyText1,
                     ),
-                    Icon(
-                      Icons.star,
-                      size: 14,
-                      color: Colors.grey,
-                    )
-                  ],
-                ),
-              ),
+                    backgroundColor: buttonTheme.primaryColor,
+                    onPressed: () {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    })
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Descrição:",
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras faucibus laoreet metus sed posuere. Etiam quis condimentum nunc, eu egestas ex. Mauris justo felis, iaculis ut lorem eget, mattis varius nulla. Mauris elementum imperdiet posuere. Nullam aliquam nulla orci, ut lobortis justo cursus ac. Aliquam mollis ultrices enim, tempus molestie nisl semper vel. Nunc nec libero arcu. Aliquam sem justo, bibendum at suscipit in, molestie eget nibh. Aenean vitae accumsan nibh, at consequat justo. Aenean lorem purus, fringilla lobortis vulputate venenatis, hendrerit commodo lacus. Duis at felis vitae elit imperdiet facilisis. ",
-                    style: const TextStyle(fontSize: 17, color: Colors.grey)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Trabalhos antigos:",
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 9),
-              child: SizedBox(
-                  height: 200,
-                  child: new ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: images.length,
-                      itemBuilder: (BuildContext context, int index) => Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  print("A");
-                                  buildPhotoViewer(context, images[index]);
-                                },
-                                child: Container(
-                                  width: 200,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(images[index]),
-                                      fit: BoxFit.cover,
-                                      alignment: Alignment.topCenter,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 2,
-                              )
-                            ],
-                          ))),
-            )
-          ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/profile');
-        },
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  Widget buildPhotoViewer(BuildContext context, String imagePath) {
-    return Container(
-        child: PhotoView(
-      imageProvider: AssetImage(imagePath),
-    ));
   }
 }
