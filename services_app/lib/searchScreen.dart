@@ -15,9 +15,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   DateTime? date;
   String? dropdownValue;
-  ScrollController controller = ScrollController();
   List<String> turnos = ['Manhã', 'Tarde', 'Noite'];
-  late String turnoSelecionado;
 
   List<Widget> itemsData = [];
 

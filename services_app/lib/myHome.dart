@@ -31,27 +31,6 @@ class _MyHomePageState extends State<MyHomePage> {
     "assets/faz-tudo.jpg",
   ];
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Corrente',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Agendado',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Options',
-      style: optionStyle,
-    ),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -102,10 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
           initial = 0;
         },
         child: GridView.count(
-          // Create a grid with 2 columns. If you change the scrollDirection to
-          // horizontal, this produces 2 rows.
           crossAxisCount: 2,
-          // Generate 100 widgets that display their index in the List.
           children: List.generate(servicos.length, (index) {
             return Center(
               child: GestureDetector(
@@ -114,7 +90,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   List<Worker> workers = WORKERS
                       .where((element) => element.category == categoriaAtual)
                       .toList();
-                  // Navigate to the second screen using a named route.
                   Navigator.pushNamed(context, '/second',
                       arguments: {'workers': workers});
                 },

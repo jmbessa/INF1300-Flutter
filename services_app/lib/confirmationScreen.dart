@@ -12,12 +12,12 @@ class ConfirmationScreen extends StatefulWidget {
 }
 
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
-  DateTime? date;
-  late String turn;
-  late String? hour;
-  late String estimatedTime;
-  late String price;
-  late String observation;
+  DateTime? _date;
+  late String _turn;
+  late String? _hour;
+  late String _estimatedTime;
+  late String _price;
+  late String _observation;
   //String _phoneNumber;
 
   Future pickDate(BuildContext context) async {
@@ -31,14 +31,14 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
 
     if (newDate == null) return;
 
-    setState(() => date = newDate);
+    setState(() => _date = newDate);
   }
 
   String getText() {
-    if (date == null) {
+    if (_date == null) {
       return "Escolha a data";
     } else {
-      return '${date!.day}/${date!.month}/${date!.year}';
+      return '${_date!.day}/${_date!.month}/${_date!.year}';
     }
   }
 
@@ -142,15 +142,15 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
   Widget _buildTurn(Worker? worker) {
     String novaString;
     Turnos? dropdownValue;
-    turn = '';
+    _turn = '';
 
     if (worker!.turn.length >= 2) {
       for (var i = 0; i < worker.turn.length; i++) {
         novaString = worker.turn[i].toString().split('.').last;
-        turn = turn + novaString;
+        _turn = _turn + novaString;
       }
     } else
-      turn = worker.turn.toString().split('.').last;
+      _turn = worker.turn.toString().split('.').last;
 
     return Column(children: <Widget>[
       Padding(
@@ -195,8 +195,6 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     ]);
   }
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     final routeData =
@@ -221,7 +219,6 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         child: Container(
           margin: EdgeInsets.all(25),
           child: Form(
-            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

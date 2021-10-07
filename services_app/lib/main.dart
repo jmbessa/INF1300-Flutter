@@ -21,9 +21,7 @@ class MyApp extends StatelessWidget {
       theme: defaultTheme,
       initialRoute: '/',
       routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
         '/': (context) => const MyHomePage(title: 'Pagina inicial'),
-        // When navigating to the "/second" route, build the SecondScreen widget.
         '/second': (context) => SearchScreen(
               workers: [],
             ),

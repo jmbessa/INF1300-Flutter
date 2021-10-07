@@ -14,13 +14,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  Color positiveColor = new Color(0xFFEF0078);
-  Color negativeColor = new Color(0xFFFFFFFF);
-  double percentage = 0;
-
-  double initial = 0;
-
   List<String> images = [
     "assets/materiais-para-pintura.jpg",
     "assets/limpeza.jpg",
@@ -135,18 +128,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       itemCount: images.length,
                       itemBuilder: (BuildContext context, int index) => Row(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  buildPhotoViewer(context, images[index]);
-                                },
-                                child: Container(
-                                  width: 200,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(images[index]),
-                                      fit: BoxFit.cover,
-                                      alignment: Alignment.topCenter,
-                                    ),
+                              Container(
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(images[index]),
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.topCenter,
                                   ),
                                 ),
                               ),
@@ -173,12 +161,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  Widget buildPhotoViewer(BuildContext context, String imagePath) {
-    return Container(
-        child: PhotoView(
-      imageProvider: AssetImage(imagePath),
-    ));
   }
 }
