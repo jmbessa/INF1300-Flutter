@@ -116,11 +116,6 @@ class _SideMenuState extends State<SideMenu> {
                     fit: BoxFit.cover),
               )),
           ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Welcome'),
-            onTap: () => {},
-          ),
-          ListTile(
             leading: Icon(Icons.verified_user),
             title: Text('Profile'),
             onTap: () {
@@ -130,16 +125,6 @@ class _SideMenuState extends State<SideMenu> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
             onTap: () => {Navigator.of(context).pop()},
           ),
         ],
