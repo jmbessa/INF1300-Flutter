@@ -15,6 +15,9 @@ String profileImagePath = "assets/materiais-para-pintura.jpg";
 XFile? backgroundImage;
 String backgroundImagePath = "assets/materiais-para-pintura.jpg";
 
+String? profileName;
+String? address;
+
 class _SideMenuState extends State<SideMenu> {
   ImagePicker picker = ImagePicker();
 
@@ -53,20 +56,40 @@ class _SideMenuState extends State<SideMenu> {
               child: Column(
                 children: [
                   Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Nome',
-                      style: TextStyle(color: Colors.white, fontSize: 22),
-                    ),
-                  ),
+                      alignment: Alignment.centerLeft,
+                      child: Stack(children: [
+                        Text(
+                            profileName != null
+                                ? profileName.toString()
+                                : 'Escolha seu nome',
+                            style: TextStyle(
+                                fontFamily: defaultTheme
+                                    .textTheme.bodyText1!.fontFamily,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                                backgroundColor: Colors.transparent,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 2
+                                  ..color = defaultTheme.shadowColor)),
+                        Text(
+                            profileName != null
+                                ? profileName.toString()
+                                : 'Escolha seu nome',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: defaultTheme
+                                    .textTheme.bodyText1!.fontFamily,
+                                fontSize: 22)),
+                      ])),
                   SizedBox(height: 2),
                   GestureDetector(
                     onTap: () async {
                       getProfileImage();
                     },
                     child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: defaultTheme.primaryColor,
+                      radius: 47,
+                      backgroundColor: defaultTheme.shadowColor,
                       child: profileImage != null
                           ? ClipOval(
                               child: Image.file(File(profileImagePath),

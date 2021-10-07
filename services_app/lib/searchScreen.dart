@@ -159,7 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
               color: Colors.white,
               boxShadow: [
-                BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 5.0),
+                BoxShadow(color: defaultTheme.shadowColor, blurRadius: 2.0),
               ]),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
