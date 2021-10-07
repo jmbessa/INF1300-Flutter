@@ -1,23 +1,46 @@
 import 'package:flutter/material.dart';
 import 'themes.dart';
-import 'widgets/sideMenu.dart';
-import 'package:photo_view/photo_view.dart';
+import 'workers.dart';
 
 class ConfirmationScreen extends StatefulWidget {
-  ConfirmationScreen({Key? key}) : super(key: key);
+  final Worker? worker;
+
+  ConfirmationScreen({Key? key, this.worker}) : super(key: key);
   @override
   _ConfirmationScreenState createState() => _ConfirmationScreenState();
 }
 
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
-  late String _address;
-  late String _date;
+  late String address;
+  DateTime? date;
   late String turn;
-  late String? _hour;
-  late String _estimatedTime;
-  late String _price;
-  late String _observation;
+  late String? hour;
+  late String estimatedTime;
+  late String price;
+  late String observation;
   //String _phoneNumber;
+
+  Future pickDate(BuildContext context) async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(DateTime.now().year),
+      lastDate: DateTime(DateTime.now().year + 4),
+    );
+
+    if (newDate == null) return;
+
+    setState(() => date = newDate);
+  }
+
+  String getText() {
+    if (date == null) {
+      return "Escolha a data";
+    } else {
+      return '${date!.day}/${date!.month}/${date!.year}';
+    }
+  }
 
   Widget _buildAddress() {
     return TextFormField(
@@ -30,41 +53,141 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         return null;
       },
       onSaved: (value) {
-        _address = value!;
+        address = value!;
       },
     );
   }
 
-  Widget _buildDate() {
+  Widget _buildDescription() {
     return Column(children: <Widget>[
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 2),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "Preco",
+            "Observação",
+            style: const TextStyle(
+                fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      TextField(
+        decoration: InputDecoration(
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+      )
+    ]);
+  }
+
+  Widget _buildDate() {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 2),
+        child: Column(children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Data", style: defaultTheme.textTheme.bodyText1)),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+                onPressed: () => pickDate(context),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    side: BorderSide(width: 1)),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      getText(),
+                      style: defaultTheme.textTheme.bodyText2,
+                      textAlign: TextAlign.start,
+                    ))),
+          ),
+        ]));
+  }
+
+  Widget _buildPrice(Worker? worker) {
+    return Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 2),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Preço",
             style: const TextStyle(
                 fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
       ),
       Padding(
-        padding: const EdgeInsets.fromLTRB(1, 0, 0, 9),
+        padding: const EdgeInsets.fromLTRB(0, 8, 0, 2),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Row(
             children: <Widget>[
               Text(
-                "4.8",
+                '\$${worker!.price.toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 17, color: Colors.black),
               ),
-              Icon(
-                Icons.star,
-                size: 14,
-                color: Colors.grey,
-              )
             ],
           ),
+        ),
+      ),
+    ]);
+  }
+
+  Widget _buildTurn(Worker? worker) {
+    String novaString;
+    Turnos? dropdownValue;
+    turn = '';
+
+    if (worker!.turn.length >= 2) {
+      for (var i = 0; i < worker.turn.length; i++) {
+        novaString = worker.turn[i].toString().split('.').last;
+        turn = turn + novaString;
+      }
+    } else
+      turn = worker.turn.toString().split('.').last;
+
+    return Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 2),
+        child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Turno", style: defaultTheme.textTheme.bodyText1)),
+      ),
+      SizedBox(
+        width: double.infinity,
+        child: DropdownButtonFormField<Turnos>(
+          isExpanded: true,
+          value: dropdownValue,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                  borderRadius:
+                      const BorderRadius.all(const Radius.circular(5)))),
+          onChanged: (Turnos? newValue) {
+            setState(() {
+              dropdownValue = newValue!;
+            });
+          },
+          hint: Container(
+            child: Text(
+              "Escolha o turno",
+              textAlign: TextAlign.start,
+            ),
+          ),
+          items: worker.turn.map<DropdownMenuItem<Turnos>>((Turnos value) {
+            return DropdownMenuItem<Turnos>(
+              value: value,
+              child: Container(
+                child: Text(
+                  value.toString().split('.').last,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ),
     ]);
@@ -74,6 +197,10 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final routeData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, Worker>;
+    var worker = routeData['worker'];
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -98,6 +225,9 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
               children: <Widget>[
                 _buildAddress(),
                 _buildDate(),
+                _buildTurn(worker),
+                _buildPrice(worker),
+                _buildDescription(),
                 SizedBox(height: 100),
                 FloatingActionButton.extended(
                     label: Text(

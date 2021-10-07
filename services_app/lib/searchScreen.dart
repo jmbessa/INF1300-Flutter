@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:services_app/workers.dart';
-import 'package:intl/intl.dart';
 import 'themes.dart';
 import 'workers.dart';
 
@@ -39,11 +38,11 @@ class _SearchScreenState extends State<SearchScreen> {
     var turno;
 
     if (dropdownValue == "Manhã")
-      turno = Turnos.manha;
+      turno = Turnos.Manha;
     else if (dropdownValue == "Tarde")
-      turno = Turnos.tarde;
+      turno = Turnos.Tarde;
     else
-      turno = Turnos.noite;
+      turno = Turnos.Noite;
 
     List<Worker> newList;
 

@@ -8,6 +8,7 @@ class ProfileScreen extends StatefulWidget {
   final Worker? worker;
 
   ProfileScreen({Key? key, this.worker}) : super(key: key);
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -136,7 +137,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  print("A");
                                   buildPhotoViewer(context, images[index]);
                                 },
                                 child: Container(
@@ -163,7 +163,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: defaultTheme.primaryColor,
         onPressed: () {
-          Navigator.pushNamed(context, '/confirmation');
+          Navigator.pushNamed(context, '/confirmation',
+              arguments: {'worker': worker});
         },
         label: Text(
           'Agendar',
