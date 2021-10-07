@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'themes.dart';
 import 'workers.dart';
+import 'widgets/sideMenu.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final Worker? worker;
@@ -11,7 +12,6 @@ class ConfirmationScreen extends StatefulWidget {
 }
 
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
-  late String address;
   DateTime? date;
   late String turn;
   late String? hour;
@@ -44,7 +44,9 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
 
   Widget _buildAddress() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Address'),
+      decoration: InputDecoration(
+          labelText: address != null ? address.toString() : '',
+          floatingLabelBehavior: FloatingLabelBehavior.never),
       maxLength: 40,
       validator: (value) {
         if (value!.isEmpty) {
@@ -58,7 +60,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     );
   }
 
-  Widget _buildDescription() {
+  Widget _buildObservation() {
     return Column(children: <Widget>[
       Padding(
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 2),
@@ -223,26 +225,36 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.fromLTRB(0, 10, 25, 0),
+                  child: SizedBox(
+                    child: Text(
+                      "Insira seu endereço",
+                      style: defaultTheme.textTheme.bodyText1,
+                    ),
+                  ),
+                ),
                 _buildAddress(),
                 _buildDate(),
                 _buildTurn(worker),
                 _buildPrice(worker),
-                _buildDescription(),
+                _buildObservation(),
                 SizedBox(height: 100),
-                FloatingActionButton.extended(
-                    label: Text(
-                      'Submit',
-                      style: buttonTheme.textTheme.bodyText1,
-                    ),
-                    backgroundColor: buttonTheme.primaryColor,
-                    onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    })
               ],
             ),
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+          label: Text(
+            'Enviar',
+            style: buttonTheme.textTheme.bodyText1,
+          ),
+          backgroundColor: buttonTheme.primaryColor,
+          onPressed: () {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

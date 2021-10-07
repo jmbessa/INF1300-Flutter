@@ -64,7 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
           foregroundColor: Colors.black,
           leading: BackButton(color: Colors.black),
           title: Text(
-            "Agendar",
+            "Agendamento",
             style: TextStyle(color: Colors.black),
           ),
         ),

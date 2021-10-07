@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              padding: const EdgeInsets.fromLTRB(15, 20, 0, 9),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

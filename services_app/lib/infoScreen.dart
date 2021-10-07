@@ -59,7 +59,7 @@ class _InfoScreenState extends State<InfoScreen> {
       focusNode: focusNode,
       decoration: InputDecoration(
           labelText:
-              address != null ? address.toString() : 'Insira seu endereco',
+              address != null ? address.toString() : 'Insira seu endereço',
           floatingLabelBehavior: FloatingLabelBehavior.never),
       maxLength: 40,
       onChanged: (value) {
