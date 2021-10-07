@@ -19,6 +19,7 @@ ThemeData _buildDefaultTheme() {
     primaryColor: Colors.teal,
     backgroundColor: Colors.black,
     buttonColor: Colors.teal,
+    shadowColor: Color.fromRGBO(0, 128, 128, 0.3),
     textTheme: TextTheme(
       bodyText1: const TextStyle(
         fontSize: 18,
