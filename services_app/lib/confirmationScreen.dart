@@ -129,7 +129,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           child: Row(
             children: <Widget>[
               Text(
-                '\$${worker!.price.toStringAsFixed(2)}',
+                '\$${worker!.price!.toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 17, color: Colors.black),
               ),
             ],

@@ -57,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '\$${worker.price.toStringAsFixed(2)}',
+                  '\$${worker.price!.toStringAsFixed(2)}',
                   style: const TextStyle(
                       fontSize: 20,
                       color: Colors.black,

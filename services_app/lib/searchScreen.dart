@@ -192,7 +192,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: 30,
                     ),
                     Text(
-                      "\$${work.price.toStringAsFixed(2)}",
+                      "\$${work.price!.toStringAsFixed(2)}",
                       style: const TextStyle(
                           fontSize: 20,
                           color: Colors.black,

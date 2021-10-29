@@ -2,18 +2,70 @@ enum Categorias { pintura, limpeza, mecanica, servResidenciais }
 
 enum Turnos { Manha, Tarde, Noite }
 
+final String tableWorkers = 'workers';
+
+class WorkersFields {
+  static final List<String> values = [
+    /// Add all fields
+    id, name, price, turn, description, evaluation, category, previousWorks,
+    previousEvaluations
+  ];
+
+  static final String id = '_id';
+  static final String name = 'name';
+  static final String price = 'price';
+  static final String turn = 'turn';
+  static final String description = 'description';
+  static final String evaluation = 'evaluation';
+  static final String category = 'category';
+  static final String previousWorks = 'previousWorks';
+  static final String previousEvaluations = 'previousEvaluations';
+}
+
 class Worker {
+  int? id;
   String name;
-  double price;
+  double? price;
   List<Turnos> turn;
   String? description;
   double? evaluation;
-  Categorias category;
+  Categorias? category;
 
   List<String>? previousWorks;
   List<double>? previousEvaluations;
 
   Worker(this.name, this.category, this.price, this.evaluation, this.turn);
+
+  Worker copy({
+    int? id,
+    required String name,
+    double? price,
+    List<Turnos>? turn,
+    String? description,
+    double? evaluation,
+    Categorias? category,
+  }) =>
+      Worker(name, category ?? this.category, price ?? this.price,
+          evaluation ?? this.evaluation, turn ?? this.turn);
+
+  Map<String, Object?> toJson() => {
+        WorkersFields.id: id,
+        WorkersFields.category: category,
+        WorkersFields.description: description,
+        WorkersFields.evaluation: evaluation,
+        WorkersFields.name: name,
+        WorkersFields.previousEvaluations: previousEvaluations,
+        WorkersFields.previousWorks: previousWorks,
+        WorkersFields.price: price,
+        WorkersFields.turn: turn,
+      };
+
+  static Worker fromJson(Map<String, Object?> json) => Worker(
+      json[WorkersFields.name] as String,
+      json[WorkersFields.category] as Categorias?,
+      json[WorkersFields.price] as double?,
+      json[WorkersFields.evaluation] as double,
+      json[WorkersFields.turn] as List<Turnos>);
 }
 
 List<Worker> WORKERS = [
