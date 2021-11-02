@@ -11,10 +11,12 @@ class WorkersDatabase {
 
   WorkersDatabase._init();
 
+  WorkersDatabase();
+
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('workers.db');
+    _database = await _initDB('workersA.db');
     return _database!;
   }
 
@@ -27,30 +29,32 @@ class WorkersDatabase {
 
   Future _createDB(Database db, int version) async {
     final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    final stringType = 'VARCHAR(40) NOT NULL';
-    final decimalType = 'DECIMAL(5, 2) NOT NULL';
-    final descriptionType = 'VARCHAR(500) NOT NULL';
+    final stringType = 'VARCHAR(40) NULL';
+    final decimalType = 'DECIMAL(5, 2) NULL';
+    final descriptionType = 'VARCHAR(500) NULL';
 
+
+    print("OI");
     await db.execute('''
     CREATE TABLE $tableWorkers (
-      $WorkersFields.id $idType,
-      $WorkersFields.name $stringType,
-      $WorkersFields.price $decimalType,
-      $WorkersFields.turn SET('Manhã', 'Tarde', 'Noite') NOT NULL,
-      $WorkersFields.description $descriptionType,
-      $WorkersFields.evaluation $decimalType,
-      $WorkersFields.category SET('Pintura', 'Limpeza', 'Mecânica', 'ServicosResidenciais') NOT NULL,
-      $WorkersFields.previousEvaluations $decimalType,
-      $WorkersFields.previousWorks $stringType
+      ${WorkersFields.id} $idType,
+      ${WorkersFields.name} $stringType,
+      ${WorkersFields.price} $decimalType,
+      ${WorkersFields.turn} $descriptionType,
+      ${WorkersFields.description} $descriptionType,
+      ${WorkersFields.evaluation} $decimalType,
+      ${WorkersFields.category} $descriptionType,
+      ${WorkersFields.previousEvaluations} $decimalType,
+      ${WorkersFields.previousWorks} $stringType
     )
     ''');
   }
 
   Future<Worker> create(Worker worker) async {
     final db = await instance.database;
-
-    final id = await db.insert(tableWorkers, worker.toJson());
-
+    print("123ADOU");
+    final id = await db.insert(tableWorkers, worker.toMap());
+    print("356ADOU");
     return worker.copy(id: id, name: '');
   }
 
@@ -84,7 +88,7 @@ class WorkersDatabase {
 
     return db.update(
       tableWorkers,
-      note.toJson(),
+      note.toMap(),
       where: '${WorkersFields.id} = ?',
       whereArgs: [note.id],
     );
