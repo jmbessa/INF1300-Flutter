@@ -1,12 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:services_app/workers.dart';
 import 'themes.dart';
 import 'workers.dart';
+import 'category.dart';
+import 'turn.dart';
+import 'database/database_connection.dart';
 
 class SearchScreen extends StatefulWidget {
-  final List<Worker>? workers;
+  final String category;
 
-  SearchScreen({Key? key, this.workers}) : super(key: key);
+  SearchScreen({Key? key, required this.category}) : super(key: key);
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -27,30 +31,35 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  
+  final Future<List<Turn>> listTurn  = WorkersDatabase.instance.readAllTurns();
+
   @override
   Widget build(BuildContext context) {
     final routeData =
-        ModalRoute.of(context)!.settings.arguments as Map<String, List<Worker>>;
-    var listWorkers = routeData['workers'];
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    var category = routeData['category'];
+
+    final Future<List<Worker>> listWorkers  = WorkersDatabase.instance.readWorkerByCategory(category!);
 
     var turno;
-
+    /*
     if (dropdownValue == "Manhã")
       turno = Turnos.Manha;
     else if (dropdownValue == "Tarde")
       turno = Turnos.Tarde;
-    else
+    else if (dropdownValue == "Noite")
       turno = Turnos.Noite;
 
     List<Worker> newList;
 
     if (dropdownValue != null)
-      newList = listWorkers!
+      newList = listWorkers
           .where((element) => element.turn.contains(turno))
           .toList();
     else
       newList = listWorkers!;
-
+    */
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -68,6 +77,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       body: Padding(
+        
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
@@ -94,46 +104,124 @@ class _SearchScreenState extends State<SearchScreen> {
             Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Turno", style: defaultTheme.textTheme.bodyText1)),
-            SizedBox(
-              width: double.infinity,
-              child: DropdownButtonFormField<String>(
-                isExpanded: true,
-                value: dropdownValue,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(const Radius.circular(5)))),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    dropdownValue = newValue!;
-                  });
-                },
-                hint: Container(
-                  child: Text(
-                    "Escolha o turno",
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                items: turnos.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Container(
-                      child: Text(
-                        value,
-                        textAlign: TextAlign.start,
+            FutureBuilder<List<Turn>>(
+              future: listTurn,
+              builder: (BuildContext context, AsyncSnapshot<List<Turn>> snapshot) {
+                List<Widget> children;
+                if (snapshot.hasData) {
+                  children = <Widget> [
+                    SizedBox(
+                      width: double.infinity,
+                      child: DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        value: dropdownValue,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    const BorderRadius.all(const Radius.circular(5)))),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        hint: Container(
+                          child: Text(
+                            "Escolha o turno",
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        items: snapshot.data?.map((t) => DropdownMenuItem<String>(
+                            child: Text(t.description),
+                            value: t.description,
+                          )
+                          ).toList(),
                       ),
                     ),
+                  ];
+                }
+                else if (snapshot.hasError) {
+                  children = <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    )
+                  ];
+                } 
+                else {
+                  children = const <Widget>[
+                    SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Awaiting result...'),
+                    )
+                  ];
+                }
+                return Center (
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: children,
+                    ),
                   );
-                }).toList(),
-              ),
+              },
             ),
             SizedBox(height: 40),
             Expanded(
-              child: Container(
-                  child: new ListView.builder(
-                      itemCount: newList.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          buildWorkerCard(context, index, newList))),
+              child: FutureBuilder<List<Worker>>(
+                future: listWorkers,
+                builder: (BuildContext context, AsyncSnapshot<List<Worker>> snapshot) {
+                  List<Widget> children;
+                  if (snapshot.hasData) {
+                    children = <Widget>[
+                      Container(
+                        height: 400,
+                        child: new ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (BuildContext context, int index) =>
+                                buildWorkerCard(context, index, snapshot.data!))),
+                    ];
+                  } else if (snapshot.hasError) {
+                    children = <Widget>[
+                      const Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 60,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Text('Error: ${snapshot.error}'),
+                      )
+                    ];
+                  } else {
+                    children = const <Widget>[
+                      SizedBox(
+                        child: CircularProgressIndicator(),
+                        width: 60,
+                        height: 60,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text('Awaiting result...'),
+                      )
+                    ];
+                  }
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: children,
+                    ),
+                  );
+                },)
             ),
           ],
         ),
