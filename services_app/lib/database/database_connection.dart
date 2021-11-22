@@ -1,3 +1,5 @@
+import 'dart:html';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:services_app/workers.dart';
 import 'package:sqflite/sqflite.dart';
@@ -7,7 +9,13 @@ import 'package:path_provider/path_provider.dart';
 class WorkersDatabase {
   static final WorkersDatabase instance = WorkersDatabase._init();
 
+  var _databaseFile;
+
   static Database? _database;
+
+  Reference _reference = FirebaseStorage.instance.ref().child('workers.db');
+
+  String? _downloadUrl = '';
 
   WorkersDatabase._init();
 
@@ -16,13 +24,15 @@ class WorkersDatabase {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('workersA.db');
+    _database = await _initDB('workersBessa.db');
     return _database!;
   }
 
   Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
+
+    _databaseFile = dbPath as File;
 
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
@@ -32,7 +42,6 @@ class WorkersDatabase {
     final stringType = 'VARCHAR(40) NULL';
     final decimalType = 'DECIMAL(5, 2) NULL';
     final descriptionType = 'VARCHAR(500) NULL';
-
 
     print("OI");
     await db.execute('''
@@ -108,5 +117,18 @@ class WorkersDatabase {
     final db = await instance.database;
 
     db.close();
+  }
+
+  Future uploadFile() async {
+    UploadTask uploadTask = _reference.putFile(_databaseFile);
+    String? url;
+    uploadTask.whenComplete(() {
+      url = _reference.getDownloadURL() as String;
+    });
+  }
+
+  Future downloadFile() async {
+    String downloadAddress = await _reference.getDownloadURL();
+    _downloadUrl = downloadAddress;
   }
 }
