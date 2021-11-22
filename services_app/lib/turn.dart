@@ -1,81 +1,47 @@
-enum Categorias { pintura, limpeza, mecanica, servResidenciais }
-
 enum Turnos { Manha, Tarde, Noite }
 
-final String tableWorkers = 'workers';
+final String tableTurn = 'turn';
 
-class WorkersFields {
+class TurnFields {
   static final List<String> values = [
     /// Add all fields
-    id, name, price, turn, description, evaluation, category, previousWorks,
-    previousEvaluations
+    id, description
   ];
 
   static final String id = '_id';
-  static final String name = 'name';
-  static final String price = 'price';
-  static final String turn = 'turn';
   static final String description = 'description';
-  static final String evaluation = 'evaluation';
-  static final String category = 'category';
-  static final String previousWorks = 'previousWorks';
-  static final String previousEvaluations = 'previousEvaluations';
 }
 
-class Worker {
-  int? id;
-  String name;
-  double? price;
-  String turn;
-  String? description;
-  double? evaluation;
-  String? category;
+class Turn {
+  int id;
+  String description;
 
-  List<String>? previousWorks;
-  List<double>? previousEvaluations;
+  Turn(this.id, this.description);
 
-  Worker(this.id, this.name, this.category, this.price, this.evaluation, this.turn);
-
-  Worker copy({
-    int? id,
-    required String name,
-    double? price,
-    String? turn,
-    String? description,
-    double? evaluation,
-    String? category,
+  Turn copy({
+    required int id,
+    required String description,
   }) =>
-      Worker(id, name, category ?? this.category, price ?? this.price,
-          evaluation ?? this.evaluation, turn ?? this.turn);
+      Turn(id, description);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic> {
-      WorkersFields.id: id,
-      WorkersFields.name: name,
-      WorkersFields.price: price,
-      WorkersFields.turn: turn,
-      WorkersFields.description: description,
-      WorkersFields.evaluation: evaluation,
-      WorkersFields.category: category,
-      WorkersFields.previousEvaluations: previousEvaluations,
-      WorkersFields.previousWorks: previousWorks,
+      TurnFields.id: id,
+      TurnFields.description: description,
     };
     return map;
   }
 
-  static Worker fromJson(Map<String, dynamic> json) => Worker(
-      json[WorkersFields.id] as int?,
-      json[WorkersFields.name] as String,
-      json[WorkersFields.category] as String?,
-      json[WorkersFields.price] is int ? (json[WorkersFields.price] as int).toDouble() : json[WorkersFields.price],
-      json[WorkersFields.evaluation] is int ? (json[WorkersFields.evaluation] as int).toDouble() : json[WorkersFields.evaluation],
-      json[WorkersFields.turn] as String);
+  static Turn fromJson(Map<String, Object?> json) => Turn(
+      json[TurnFields.id] as int,
+      json[TurnFields.description] as String);
 }
 
-List<Worker> WORKERS = [
-  Worker(1,"Pedro Cunha", "Categorias.limpeza", 120.00, 4.0,
-      "[Turnos.Manha, Turnos.Tarde, Turnos.Noite]"),
-];
+//List<Turn> TURN = [
+//  Turn(1,"Manha"),
+//  Turn(2,"Tarde"),
+//  Turn(3,"Noite"),
+//];
 /*
 List<Worker> WORKERS = [
   Worker("Pedro Cunha", Categorias.limpeza, 120.00, 4.0,
