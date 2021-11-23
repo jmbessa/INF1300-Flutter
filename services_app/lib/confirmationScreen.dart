@@ -161,7 +161,15 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
       ),
       SizedBox(
         width: double.infinity,
-        child: DropdownButtonFormField<Turnos>(
+        child: TextFormField(
+          initialValue: worker.turn,
+          decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+        )
+        /* child: DropdownButtonFormField<Turnos>(
           isExpanded: true,
           value: dropdownValue,
           decoration: InputDecoration(
@@ -190,7 +198,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
               ),
             );
           }).toList(),
-        ),
+        ), */
       ),
     ]);
   }

@@ -116,16 +116,11 @@ class WorkersDatabase {
     }
   }
 
-  Future<List<Worker>> readWorkerByFilter(String category, String turn) async {
+  Future<List<Worker>> readWorkerByFilter(String categoryName, String turn) async {
     final db = await instance.database;
-    final maps = await db.query(tableWorkers,
-        columns: WorkersFields.values, where: '$WorkersFields.category = $category && $WorkersFields.turn = $turn' );
+    final maps = await db.rawQuery("SELECT * FROM workers WHERE category = '$categoryName' & turn = '$turn'" );
 
-    if (maps.isNotEmpty) {
-      return maps.map((json) => Worker.fromJson(json)).toList();
-    } else {
-      throw Exception('Category $category not found');
-    }
+    return maps.map((json) => Worker.fromJson(json)).toList();
   }
 
   Future<Turn> readTurn(int id) async {
