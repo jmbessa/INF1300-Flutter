@@ -6,7 +6,7 @@ import 'workers.dart';
 import 'category.dart';
 import 'turn.dart';
 import 'database/database_connection.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'dart:async';
 
 class SearchScreen extends StatefulWidget {
   final String category;
@@ -31,8 +31,12 @@ class _SearchScreenState extends State<SearchScreen> {
       return '${date!.day}/${date!.month}/${date!.year}';
     }
   }
+  //final StreamController ctrl = StreamController();
+  //final StreamSubscription subscription = ctrl.stream.listen((data) => print('$data'));
 
-  final Future<List<Turn>> listTurn = WorkersDatabase.instance.readAllTurns();
+  //ctrl.sink.add(WorkersDatabase.instance.readAllTurns());
+  
+  final Future<List<Turn>> listTurn  = WorkersDatabase.instance.readAllTurns();
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     var category = routeData['category'];
 
-    final Future<List<Worker>> listWorkers =
-        WorkersDatabase.instance.readWorkerByCategory(category!);
+    Stream<List<Worker>> listWorkers = Stream.fromFuture(WorkersDatabase.instance.readWorkerByCategory(category!)) ;
 
     var turno;
     /*
@@ -107,8 +110,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     style: defaultTheme.textTheme.bodyText1)),
             FutureBuilder<List<Turn>>(
               future: listTurn,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Turn>> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<List<Turn>> snapshot) {
+
                 List<Widget> children;
                 if (snapshot.hasData) {
                   children = <Widget>[
@@ -125,6 +128,8 @@ class _SearchScreenState extends State<SearchScreen> {
                           setState(() {
                             dropdownValue = newValue!;
                           });
+                          listWorkers = Stream.fromFuture(WorkersDatabase.instance.readWorkerByFilter(category, dropdownValue!));
+                          setState(() {});
                         },
                         hint: Container(
                           child: Text(
@@ -177,14 +182,13 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             SizedBox(height: 40),
             Expanded(
-                child: FutureBuilder<List<Worker>>(
-              future: listWorkers,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Worker>> snapshot) {
-                List<Widget> children;
-                if (snapshot.hasData) {
-                  children = <Widget>[
-                    Container(
+              child: StreamBuilder<List<Worker>>(
+                stream: listWorkers,
+                builder: (BuildContext context, AsyncSnapshot<List<Worker>> snapshot) {
+                  List<Widget> children;
+                  if (snapshot.hasData) {
+                    children = <Widget>[
+                      Container(
                         height: 400,
                         child: new ListView.builder(
                             itemCount: snapshot.data!.length,

@@ -164,36 +164,44 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
       ),
       SizedBox(
         width: double.infinity,
-        // child: DropdownButtonFormField<Turnos>(
-        //   isExpanded: true,
-        //   value: dropdownValue,
-        //   decoration: InputDecoration(
-        //       border: OutlineInputBorder(
-        //           borderRadius:
-        //               const BorderRadius.all(const Radius.circular(5)))),
-        //   onChanged: (Turnos? newValue) {
-        //     setState(() {
-        //       dropdownValue = newValue!;
-        //     });
-        //   },
-        //   hint: Container(
-        //     child: Text(
-        //       "Escolha o turno",
-        //       textAlign: TextAlign.start,
-        //     ),
-        //   ),
-        //   items: worker.turn.map<DropdownMenuItem<Turnos>>((Turnos value) {
-        //     return DropdownMenuItem<Turnos>(
-        //       value: value,
-        //       child: Container(
-        //         child: Text(
-        //           value.toString().split('.').last,
-        //           textAlign: TextAlign.start,
-        //         ),
-        //       ),
-        //     );
-        //   }).toList(),
-        // ),
+        child: TextFormField(
+          initialValue: worker.turn,
+          decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+        )
+        /* child: DropdownButtonFormField<Turnos>(
+          isExpanded: true,
+          value: dropdownValue,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                  borderRadius:
+                      const BorderRadius.all(const Radius.circular(5)))),
+          onChanged: (Turnos? newValue) {
+            setState(() {
+              dropdownValue = newValue!;
+            });
+          },
+          hint: Container(
+            child: Text(
+              "Escolha o turno",
+              textAlign: TextAlign.start,
+            ),
+          ),
+          items: worker.turn.map<DropdownMenuItem<Turnos>>((Turnos value) {
+            return DropdownMenuItem<Turnos>(
+              value: value,
+              child: Container(
+                child: Text(
+                  value.toString().split('.').last,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            );
+          }).toList(),
+        ), */
       ),
     ]);
   }
