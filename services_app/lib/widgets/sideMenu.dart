@@ -2,7 +2,9 @@ import 'dart:io';
 import '../themes.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'database_connection.dart';
+import 'package:services_app/database/database_connection.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'language_picker_widget.dart';
 
 class SideMenu extends StatefulWidget {
   SideMenu({Key? key}) : super(key: key);
@@ -62,7 +64,7 @@ class _SideMenuState extends State<SideMenu> {
                         Text(
                             profileName != null
                                 ? profileName.toString()
-                                : 'Escolha seu nome',
+                                : AppLocalizations.of(context)!.escolhaNome,
                             style: TextStyle(
                                 fontFamily: defaultTheme
                                     .textTheme.bodyText1!.fontFamily,
@@ -76,7 +78,7 @@ class _SideMenuState extends State<SideMenu> {
                         Text(
                             profileName != null
                                 ? profileName.toString()
-                                : 'Escolha seu nome',
+                                : AppLocalizations.of(context)!.escolhaNome,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: defaultTheme
@@ -118,7 +120,7 @@ class _SideMenuState extends State<SideMenu> {
               )),
           ListTile(
             leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
+            title: Text(AppLocalizations.of(context)!.perfil),
             onTap: () {
               Navigator.pushNamed(context, '/info');
             },
@@ -128,6 +130,7 @@ class _SideMenuState extends State<SideMenu> {
             title: Text('Settings'),
             onTap: () => {Navigator.of(context).pop()},
           ),
+          Container(child: LanguagePickerWidget())
         ],
       ),
     );

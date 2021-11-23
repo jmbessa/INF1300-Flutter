@@ -1,0 +1,32 @@
+{
+    "language": "Português",
+    "@language":{
+      "description": "O Idioma atual"
+    },
+    "categorias": "Categorias",
+    "home": "Home",
+    "corrente": "Corrente",
+    "agendado": "Agendado",
+    "options": "Opções",
+    "pintura": "Pintura",
+    "mecanica": "Mecânica",
+    "limpeza": "Limpeza",
+    "servicosResidenciais": "Serviços Residenciais",
+    "data": "Data",
+    "turno": "Turno",
+    "escolhaData": "Escolha a data",
+    "escolhaTurno": "Escolha o turno",
+    "agendamento": "Agendamento",
+    "escolhaNome": "Escolha seu nome",
+    "perfil": "Perfil",
+    "config": "Configurações",
+    "alteraNome": "Altere seu nome aqui:",
+    "alteraFoto": "Altere sua foto de perfil aqui:",
+    "alteraFundo": "Altere sua foto de fundo aqui:",
+    "alteraEndereco": "Altere seu endereço aqui:",
+    "insereEndereco": "Insira seu endereço aqui:",
+    "alteraBtn": "Alterar",
+    "descricao": "Descrição",
+    "agendarBtn": "Agendar",
+    "trabalhosAntigos": "Trabalhos antigos:"
+}

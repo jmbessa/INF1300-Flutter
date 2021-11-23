@@ -6,20 +6,18 @@ import 'themes.dart';
 import 'workers.dart';
 import 'widgets/sideMenu.dart';
 import 'database/database_connection.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
-  
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
   double initial = 0;
@@ -46,8 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
-late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   void selectNotification(String? payload) async {
     if (payload != null) {
@@ -63,23 +60,27 @@ late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   }
 
   Future _showNotificationWithSound() async {
-
     var adnroidPlatformChannelSpecifics = new AndroidNotificationDetails(
-      'notification_channel_id', 'Channel Name');
-    
+        'notification_channel_id', 'Channel Name');
+
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
 
-    var platformChannelSpecifics = new NotificationDetails(android: adnroidPlatformChannelSpecifics,iOS: iOSPlatformChannelSpecifics);
+    var platformChannelSpecifics = new NotificationDetails(
+        android: adnroidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(0, 'New Post', 'How to Show Notification in Fllutter', platformChannelSpecifics,payload: 'Default_Sound');
+    await flutterLocalNotificationsPlugin.show(0, 'New Post',
+        'How to Show Notification in Fllutter', platformChannelSpecifics,
+        payload: 'Default_Sound');
   }
 
   @override
   initState() {
     super.initState();
-    // initialise the plugin. 
+    // initialise the plugin.
     // If you want default icon change app_icon to @mipmap/ic_launcher
-    var initializationSettingsAndroid = new AndroidInitializationSettings('app_icon'); 
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
@@ -88,9 +89,8 @@ late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
         onSelectNotification: selectNotification);
   }
 
-  final Future<List<CategoryObj>> categories = WorkersDatabase.instance.readAllCategories();
-
-
+  final Future<List<CategoryObj>> categories =
+      WorkersDatabase.instance.readAllCategories();
 
   @override
   Widget build(BuildContext context) {
@@ -116,118 +116,142 @@ late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
           elevation: 0,
           foregroundColor: defaultTheme.backgroundColor,
           title: Text(
-            "Categorias",
+            AppLocalizations.of(context)!.categorias,
             style: TextStyle(color: defaultTheme.backgroundColor),
           ),
         ),
       ),
       body: FutureBuilder<List<CategoryObj>>(
-        future: categories,
-        builder: (BuildContext context, AsyncSnapshot<List<CategoryObj>> snapshot) {
-          List<Widget> children;
-          if (snapshot.hasData) {
-            children = <Widget> [
-              GestureDetector(
-              onPanStart: (DragStartDetails details) {
-                initial = details.globalPosition.dx;
-              },
-              onPanUpdate: (DragUpdateDetails details) {
-                double distance = details.globalPosition.dx - initial;
-                if (distance < -20) _scaffoldKey.currentState?.openEndDrawer();
-              },
-              onPanEnd: (DragEndDetails details) {
-                initial = 0;
-              },
-              child: Container(height: 600,child: GridView.count(
-                crossAxisCount: 2,
-                children: List.generate(snapshot.data!.length, (index) {
-                  return GestureDetector(
-                      onTap: () {
-                        //Category categoriaAtual = Category.values[index];
-                        //List<Worker> workers = WORKERS
-                        //    .where((element) => element.category == categoriaAtual)
-                        //    .toList();
-                        Navigator.pushNamed(context, '/second',
-                            arguments: {'category': snapshot.data!.where((element) => element.id == index+1).map((e) => e.description).first});
-                      },
-                      child: FractionallySizedBox(
-                        heightFactor: 0.9,
-                        widthFactor: 0.9,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          color: Colors.yellow,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(snapshot.data!.where((element) => element.id == index+1).map((e) => e.imagePath).first),
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.topCenter,
-                                ),
-                              ),
-                              child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Stack(children: [
-                                    Text(snapshot.data!.where((element) => element.id == index+1).map((e) => e.description).first,
-                                        style: TextStyle(
-                                            fontFamily: defaultTheme
-                                                .textTheme.bodyText1!.fontFamily,
-                                            fontWeight: FontWeight.bold,
-                                            backgroundColor: Colors.transparent,
-                                            foreground: Paint()
-                                              ..style = PaintingStyle.stroke
-                                              ..strokeWidth = 2
-                                              ..color = Color.fromRGBO(0, 0, 0, 1))),
-                                    Text(
-                                      snapshot.data!.where((element) => element.id == index+1).map((e) => e.description).first,
-                                      style: TextStyle(
-                                        color: Colors.white,
+          future: categories,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<CategoryObj>> snapshot) {
+            List<Widget> children;
+            if (snapshot.hasData) {
+              children = <Widget>[
+                GestureDetector(
+                    onPanStart: (DragStartDetails details) {
+                      initial = details.globalPosition.dx;
+                    },
+                    onPanUpdate: (DragUpdateDetails details) {
+                      double distance = details.globalPosition.dx - initial;
+                      if (distance < -20)
+                        _scaffoldKey.currentState?.openEndDrawer();
+                    },
+                    onPanEnd: (DragEndDetails details) {
+                      initial = 0;
+                    },
+                    child: Container(
+                      height: 400,
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        children: List.generate(snapshot.data!.length, (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              //Category categoriaAtual = Category.values[index];
+                              //List<Worker> workers = WORKERS
+                              //    .where((element) => element.category == categoriaAtual)
+                              //    .toList();
+                              Navigator
+                                  .pushNamed(context, '/second', arguments: {
+                                'category': snapshot.data!
+                                    .where((element) => element.id == index + 1)
+                                    .map((e) => e.description)
+                                    .first
+                              });
+                            },
+                            child: FractionallySizedBox(
+                              heightFactor: 0.9,
+                              widthFactor: 0.9,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                color: Colors.yellow,
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(snapshot.data!
+                                            .where((element) =>
+                                                element.id == index + 1)
+                                            .map((e) => e.imagePath)
+                                            .first),
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.topCenter,
                                       ),
                                     ),
-                                  ]))),
-                        ),
+                                    child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Stack(children: [
+                                          Text(
+                                              snapshot.data!
+                                                  .where((element) =>
+                                                      element.id == index + 1)
+                                                  .map((e) => e.description)
+                                                  .first,
+                                              style: TextStyle(
+                                                  fontFamily: defaultTheme
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .fontFamily,
+                                                  fontWeight: FontWeight.bold,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  foreground: Paint()
+                                                    ..style =
+                                                        PaintingStyle.stroke
+                                                    ..strokeWidth = 2
+                                                    ..color = Color.fromRGBO(
+                                                        0, 0, 0, 1))),
+                                          Text(
+                                            snapshot.data!
+                                                .where((element) =>
+                                                    element.id == index + 1)
+                                                .map((e) => e.description)
+                                                .first,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ]))),
+                              ),
+                            ),
+                          );
+                        }),
                       ),
-                    );
-                }),
-              ),)
-            )
-            ];
-          }
-          else if (snapshot.hasError) {
-            children = <Widget>[
-              const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 60,
+                    ))
+              ];
+            } else if (snapshot.hasError) {
+              children = <Widget>[
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                )
+              ];
+            } else {
+              children = const <Widget>[
+                SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 60,
+                  height: 60,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                )
+              ];
+            }
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: children,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Text('Error: ${snapshot.error}'),
-              )
-            ];
-          }
-          else {
-            children = const <Widget>[
-              SizedBox(
-                child: CircularProgressIndicator(),
-                width: 60,
-                height: 60,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
-              )
-            ];
-          }
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: children,
-            ),
-          );
-        }
-      ),
+            );
+          }),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[

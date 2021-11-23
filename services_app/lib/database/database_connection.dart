@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:services_app/workers.dart';
@@ -11,13 +11,14 @@ import 'package:path_provider/path_provider.dart';
 class WorkersDatabase {
   static final WorkersDatabase instance = WorkersDatabase._init();
 
-  var _databaseFile;
+  File? _databaseFile;
 
   static Database? _database;
 
-  Reference _reference = FirebaseStorage.instance.ref().child('workers.db');
+  Reference _reference =
+      FirebaseStorage.instance.ref().child('workersBessa3.db');
 
-  String? _downloadUrl = '';
+  String? _downloadUrl;
 
   WorkersDatabase._init();
 
@@ -26,7 +27,7 @@ class WorkersDatabase {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('workersB.db');
+    _database = await _initDB('workersBessa3.db');
     return _database!;
   }
 
@@ -34,7 +35,7 @@ class WorkersDatabase {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    _databaseFile = dbPath as File;
+    _databaseFile = File(filePath);
 
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
@@ -45,7 +46,8 @@ class WorkersDatabase {
     final decimalType = 'DECIMAL(5, 2) NULL';
     final descriptionType = 'VARCHAR(500) NULL';
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableWorkers (
       ${WorkersFields.id} $idType,
       ${WorkersFields.name} $stringType,
@@ -59,14 +61,16 @@ class WorkersDatabase {
     )
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableTurn (
       ${TurnFields.id} $idType,
       ${TurnFields.description} $stringType
     )
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableCategory (
       ${CategoryFields.id} $idType,
       ${CategoryFields.description} $stringType,
@@ -117,7 +121,8 @@ class WorkersDatabase {
 
     //final maps = await db.query(tableWorkers,
     //    columns: WorkersFields.values, where: '${WorkersFields.category} = $categoryName');
-    final maps = await db.rawQuery("SELECT * FROM workers WHERE category = '$categoryName'");
+    final maps = await db
+        .rawQuery("SELECT * FROM workers WHERE category = '$categoryName'");
 
     if (maps.isNotEmpty) {
       return maps.map((json) => Worker.fromJson(json)).toList();
@@ -129,7 +134,9 @@ class WorkersDatabase {
   Future<List<Worker>> readWorkerByFilter(String category, String turn) async {
     final db = await instance.database;
     final maps = await db.query(tableWorkers,
-        columns: WorkersFields.values, where: '$WorkersFields.category = $category && $WorkersFields.turn = $turn' );
+        columns: WorkersFields.values,
+        where:
+            '$WorkersFields.category = $category && $WorkersFields.turn = $turn');
 
     if (maps.isNotEmpty) {
       return maps.map((json) => Worker.fromJson(json)).toList();
@@ -227,13 +234,22 @@ class WorkersDatabase {
     db.close();
   }
 
-  Future uploadFile() async {
-    UploadTask uploadTask = _reference.putFile(_databaseFile);
-    String? url;
-    uploadTask.whenComplete(() {
-      url = _reference.getDownloadURL() as String;
-    });
+  Future<void> uploadFile() async {
+    File file = _databaseFile!;
+
+    try {
+      await FirebaseStorage.instance.ref().putFile(file);
+    } on FirebaseException catch (e) {
+      // e.g, e.code == 'canceled'
+    }
   }
+
+  // Future uploadFile() async {
+  //   UploadTask uploadTask = _reference.putFile(_databaseFile!);
+  //   uploadTask.whenComplete(() {
+  //     String url = _reference.getDownloadURL() as String;
+  //   });
+  // }
 
   Future downloadFile() async {
     String downloadAddress = await _reference.getDownloadURL();

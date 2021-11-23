@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'themes.dart';
 import 'workers.dart';
 import 'widgets/sideMenu.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final Worker? worker;
@@ -36,7 +37,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
 
   String getText() {
     if (_date == null) {
-      return "Escolha a data";
+      return AppLocalizations.of(context)!.escolhaData;
     } else {
       return '${_date!.day}/${_date!.month}/${_date!.year}';
     }
@@ -89,7 +90,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         child: Column(children: [
           Align(
               alignment: Alignment.centerLeft,
-              child: Text("Data", style: defaultTheme.textTheme.bodyText1)),
+              child: Text(AppLocalizations.of(context)!.data,
+                  style: defaultTheme.textTheme.bodyText1)),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -157,40 +159,41 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 2),
         child: Align(
             alignment: Alignment.centerLeft,
-            child: Text("Turno", style: defaultTheme.textTheme.bodyText1)),
+            child: Text(AppLocalizations.of(context)!.turno,
+                style: defaultTheme.textTheme.bodyText1)),
       ),
       SizedBox(
         width: double.infinity,
-        child: DropdownButtonFormField<Turnos>(
-          isExpanded: true,
-          value: dropdownValue,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderRadius:
-                      const BorderRadius.all(const Radius.circular(5)))),
-          onChanged: (Turnos? newValue) {
-            setState(() {
-              dropdownValue = newValue!;
-            });
-          },
-          hint: Container(
-            child: Text(
-              "Escolha o turno",
-              textAlign: TextAlign.start,
-            ),
-          ),
-          items: worker.turn.map<DropdownMenuItem<Turnos>>((Turnos value) {
-            return DropdownMenuItem<Turnos>(
-              value: value,
-              child: Container(
-                child: Text(
-                  value.toString().split('.').last,
-                  textAlign: TextAlign.start,
-                ),
-              ),
-            );
-          }).toList(),
-        ),
+        // child: DropdownButtonFormField<Turnos>(
+        //   isExpanded: true,
+        //   value: dropdownValue,
+        //   decoration: InputDecoration(
+        //       border: OutlineInputBorder(
+        //           borderRadius:
+        //               const BorderRadius.all(const Radius.circular(5)))),
+        //   onChanged: (Turnos? newValue) {
+        //     setState(() {
+        //       dropdownValue = newValue!;
+        //     });
+        //   },
+        //   hint: Container(
+        //     child: Text(
+        //       "Escolha o turno",
+        //       textAlign: TextAlign.start,
+        //     ),
+        //   ),
+        //   items: worker.turn.map<DropdownMenuItem<Turnos>>((Turnos value) {
+        //     return DropdownMenuItem<Turnos>(
+        //       value: value,
+        //       child: Container(
+        //         child: Text(
+        //           value.toString().split('.').last,
+        //           textAlign: TextAlign.start,
+        //         ),
+        //       ),
+        //     );
+        //   }).toList(),
+        // ),
       ),
     ]);
   }

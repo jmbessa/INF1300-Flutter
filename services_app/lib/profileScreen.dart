@@ -3,6 +3,7 @@ import 'themes.dart';
 import 'widgets/sideMenu.dart';
 import 'workers.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Worker? worker;
@@ -89,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Descrição:",
+                  AppLocalizations.of(context)!.descricao,
                   style: const TextStyle(
                       fontSize: 20,
                       color: Colors.black,
@@ -155,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               arguments: {'worker': worker});
         },
         label: Text(
-          'Agendar',
+          AppLocalizations.of(context)!.agendarBtn,
           style: buttonTheme.textTheme.bodyText1,
         ),
       ),

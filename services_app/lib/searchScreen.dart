@@ -6,6 +6,7 @@ import 'workers.dart';
 import 'category.dart';
 import 'turn.dart';
 import 'database/database_connection.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchScreen extends StatefulWidget {
   final String category;
@@ -25,14 +26,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
   String getText() {
     if (date == null) {
-      return "Escolha a data";
+      return AppLocalizations.of(context)!.escolhaData;
     } else {
       return '${date!.day}/${date!.month}/${date!.year}';
     }
   }
 
-  
-  final Future<List<Turn>> listTurn  = WorkersDatabase.instance.readAllTurns();
+  final Future<List<Turn>> listTurn = WorkersDatabase.instance.readAllTurns();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,8 @@ class _SearchScreenState extends State<SearchScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     var category = routeData['category'];
 
-    final Future<List<Worker>> listWorkers  = WorkersDatabase.instance.readWorkerByCategory(category!);
+    final Future<List<Worker>> listWorkers =
+        WorkersDatabase.instance.readWorkerByCategory(category!);
 
     var turno;
     /*
@@ -71,13 +72,12 @@ class _SearchScreenState extends State<SearchScreen> {
           foregroundColor: Colors.black,
           leading: BackButton(color: Colors.black),
           title: Text(
-            "Agendamento",
+            AppLocalizations.of(context)!.agendamento,
             style: TextStyle(color: Colors.black),
           ),
         ),
       ),
       body: Padding(
-        
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
@@ -103,13 +103,15 @@ class _SearchScreenState extends State<SearchScreen> {
             SizedBox(height: 10),
             Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Turno", style: defaultTheme.textTheme.bodyText1)),
+                child: Text(AppLocalizations.of(context)!.turno,
+                    style: defaultTheme.textTheme.bodyText1)),
             FutureBuilder<List<Turn>>(
               future: listTurn,
-              builder: (BuildContext context, AsyncSnapshot<List<Turn>> snapshot) {
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Turn>> snapshot) {
                 List<Widget> children;
                 if (snapshot.hasData) {
-                  children = <Widget> [
+                  children = <Widget>[
                     SizedBox(
                       width: double.infinity,
                       child: DropdownButtonFormField<String>(
@@ -117,8 +119,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         value: dropdownValue,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius:
-                                    const BorderRadius.all(const Radius.circular(5)))),
+                                borderRadius: const BorderRadius.all(
+                                    const Radius.circular(5)))),
                         onChanged: (String? newValue) {
                           setState(() {
                             dropdownValue = newValue!;
@@ -126,20 +128,20 @@ class _SearchScreenState extends State<SearchScreen> {
                         },
                         hint: Container(
                           child: Text(
-                            "Escolha o turno",
+                            AppLocalizations.of(context)!.escolhaTurno,
                             textAlign: TextAlign.start,
                           ),
                         ),
-                        items: snapshot.data?.map((t) => DropdownMenuItem<String>(
-                            child: Text(t.description),
-                            value: t.description,
-                          )
-                          ).toList(),
+                        items: snapshot.data
+                            ?.map((t) => DropdownMenuItem<String>(
+                                  child: Text(t.description),
+                                  value: t.description,
+                                ))
+                            .toList(),
                       ),
                     ),
                   ];
-                }
-                else if (snapshot.hasError) {
+                } else if (snapshot.hasError) {
                   children = <Widget>[
                     const Icon(
                       Icons.error_outline,
@@ -151,8 +153,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: Text('Error: ${snapshot.error}'),
                     )
                   ];
-                } 
-                else {
+                } else {
                   children = const <Widget>[
                     SizedBox(
                       child: CircularProgressIndicator(),
@@ -165,64 +166,66 @@ class _SearchScreenState extends State<SearchScreen> {
                     )
                   ];
                 }
-                return Center (
+                return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: children,
-                    ),
-                  );
+                  ),
+                );
               },
             ),
             SizedBox(height: 40),
             Expanded(
-              child: FutureBuilder<List<Worker>>(
-                future: listWorkers,
-                builder: (BuildContext context, AsyncSnapshot<List<Worker>> snapshot) {
-                  List<Widget> children;
-                  if (snapshot.hasData) {
-                    children = <Widget>[
-                      Container(
+                child: FutureBuilder<List<Worker>>(
+              future: listWorkers,
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Worker>> snapshot) {
+                List<Widget> children;
+                if (snapshot.hasData) {
+                  children = <Widget>[
+                    Container(
                         height: 400,
                         child: new ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (BuildContext context, int index) =>
-                                buildWorkerCard(context, index, snapshot.data!))),
-                    ];
-                  } else if (snapshot.hasError) {
-                    children = <Widget>[
-                      const Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 60,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Text('Error: ${snapshot.error}'),
-                      )
-                    ];
-                  } else {
-                    children = const <Widget>[
-                      SizedBox(
-                        child: CircularProgressIndicator(),
-                        width: 60,
-                        height: 60,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 16),
-                        child: Text('Awaiting result...'),
-                      )
-                    ];
-                  }
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: children,
+                                buildWorkerCard(
+                                    context, index, snapshot.data!))),
+                  ];
+                } else if (snapshot.hasError) {
+                  children = <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
                     ),
-                  );
-                },)
-            ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    )
+                  ];
+                } else {
+                  children = const <Widget>[
+                    SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Awaiting result...'),
+                    )
+                  ];
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: children,
+                  ),
+                );
+              },
+            )),
           ],
         ),
       ),

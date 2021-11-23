@@ -1,0 +1,32 @@
+{
+    "language": "Español",
+    "@language":{
+      "description": "El idioma actual"
+    },
+    "categorias": "Categorías",
+    "home": "Hogar",
+    "corrente": "Actual",
+    "agendado": "Programado",
+    "options": "Opciones",
+    "pintura": "Cuadro",
+    "mecanica": "Mecánica",
+    "limpeza": "Limpieza",
+    "servicosResidenciais": "Servicios residenciales",
+    "data": "Fecha",
+    "turno": "Turno",
+    "escolhaData": "Elige la fecha",
+    "escolhaTurno": "Elige el turno",
+    "agendamento": "Planificación",
+    "escolhaNome": "Elige tu nombre",
+    "perfil": "Perfil",
+    "config": "Ajustes",
+    "alteraNome": "Cambia tu nombre aquí:",
+    "alteraFoto": "Cambia tu foto de perfil aquí:",
+    "alteraFundo": "Cambia tu foto de fondo aquí:",
+    "alteraEndereco": "Cambia tu dirección aquí:",
+    "insereEndereco": "Ingrese su dirección aquí:",
+    "alteraBtn": "Cambio",
+    "descricao": "Descripción",
+    "agendarBtn": "Para programar",
+    "trabalhosAntigos": "Obras antiguas:"
+}

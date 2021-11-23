@@ -1,0 +1,32 @@
+{
+    "language": "English",
+    "@language":{
+      "description": "The current Language"
+    },
+    "categorias": "Categories",
+    "home": "Home",
+    "corrente": "Current",
+    "agendado": "Scheduled",
+    "options": "Options",
+    "pintura": "Painting",
+    "mecanica": "Mechanics",
+    "limpeza": "Cleaning",
+    "servicosResidenciais": "Residential Services",
+    "data": "Date",
+    "turno": "Shift",
+    "escolhaData": "Choose the date",
+    "escolhaTurno": "Choose the shift",
+    "agendamento": "Scheduling",
+    "escolhaNome": "Choose your name",
+    "perfil": "Profile",
+    "config": "Settings",
+    "alteraNome": "Change your name here:",
+    "alteraFoto": "Change your profile picture here:",
+    "alteraFundo": "Change your background picture here:",
+    "alteraEndereco": "Change your address here:",
+    "insereEndereco": "Enter your address here:",
+    "alteraBtn": "Change",
+    "descricao": "Description",
+    "agendarBtn": "Schedule",
+    "trabalhosAntigos": "Old works:"
+}
