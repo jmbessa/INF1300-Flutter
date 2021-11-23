@@ -46,8 +46,7 @@ class WorkersDatabase {
     final decimalType = 'DECIMAL(5, 2) NULL';
     final descriptionType = 'VARCHAR(500) NULL';
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableWorkers (
       ${WorkersFields.id} $idType,
       ${WorkersFields.name} $stringType,
@@ -61,16 +60,14 @@ class WorkersDatabase {
     )
     ''');
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableTurn (
       ${TurnFields.id} $idType,
       ${TurnFields.description} $stringType
     )
     ''');
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableCategory (
       ${CategoryFields.id} $idType,
       ${CategoryFields.description} $stringType,
@@ -131,12 +128,13 @@ class WorkersDatabase {
     }
   }
 
-  Future<List<Worker>> readWorkerByFilter(String categoryName, String turn) async {
+  Future<List<Worker>> readWorkerByFilter(
+      String categoryName, String turn) async {
     final db = await instance.database;
     final maps = await db.query(tableWorkers,
         columns: WorkersFields.values,
         where:
-            '$WorkersFields.category = $category && $WorkersFields.turn = $turn');
+            '$WorkersFields.category = $categoryName && $WorkersFields.turn = $turn');
 
     return maps.map((json) => Worker.fromJson(json)).toList();
   }
