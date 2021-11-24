@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'themes.dart';
-import 'widgets/sideMenu.dart';
-import 'workers.dart';
+import '../themes.dart';
+import '../widgets/sideMenu.dart';
+import '../models/workers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

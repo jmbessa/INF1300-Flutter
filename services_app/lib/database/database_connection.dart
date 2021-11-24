@@ -1,8 +1,12 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:services_app/workers.dart';
-import 'package:services_app/turn.dart';
-import 'package:services_app/category.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:services_app/models/workers.dart';
+import 'package:services_app/models/turn.dart';
+import 'package:services_app/models/category.dart';
+import 'package:services_app/models/profile.dart';
+import 'package:services_app/models/order.dart';
+import 'package:services_app/models/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -14,7 +18,7 @@ class WorkersDatabase {
   static Database? _database;
 
   Reference _reference =
-      FirebaseStorage.instance.ref().child('workersBessa3.db');
+      FirebaseStorage.instance.ref().child('workersBessa11.db');
 
   String? _downloadUrl;
 
@@ -25,7 +29,7 @@ class WorkersDatabase {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('workersBessa3.db');
+    _database = await _initDB('workersBessa11.db');
     return _database!;
   }
 
@@ -40,8 +44,11 @@ class WorkersDatabase {
 
   Future _createDB(Database db, int version) async {
     final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+    final integerType = 'INTEGER NOT NULL';
+    final numberType = 'INTEGER NULL';
     final stringType = 'VARCHAR(40) NULL';
     final decimalType = 'DECIMAL(5, 2) NULL';
+    final doubleType = 'DOUBLE NULL';
     final descriptionType = 'VARCHAR(500) NULL';
 
     await db.execute(
@@ -54,8 +61,8 @@ class WorkersDatabase {
       ${WorkersFields.description} $descriptionType,
       ${WorkersFields.evaluation} $decimalType,
       ${WorkersFields.category} $descriptionType,
-      ${WorkersFields.previousEvaluations} $decimalType,
-      ${WorkersFields.previousWorks} $stringType
+      ${WorkersFields.previousWorks} $stringType,
+      ${WorkersFields.dates} $stringType
     )
     ''');
 
@@ -75,6 +82,41 @@ class WorkersDatabase {
       ${CategoryFields.imagePath} $stringType
     )
     ''');
+
+    await db.execute('''
+    CREATE TABLE requestOrder (
+      ${OrderFields.id} $idType,
+      ${OrderFields.userId} $numberType,
+      ${OrderFields.workerId} $numberType,
+      ${OrderFields.observation} $stringType,
+      ${OrderFields.price} $doubleType,
+      ${OrderFields.address} $stringType,
+      ${OrderFields.date} $stringType,
+      ${OrderFields.turn} $stringType
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE $tableWorkerTurn (
+      ${WorkersTurnFields.id} $idType,
+      ${WorkersTurnFields.workerId} $integerType,
+      ${WorkersTurnFields.turnId} $integerType,
+      FOREIGN KEY(${WorkersTurnFields.workerId}) REFERENCES $tableWorkers(_id),
+      FOREIGN KEY(${WorkersTurnFields.turnId}) REFERENCES $tableTurn(_id)
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE $tableUser (
+      ${UserFields.id} $idType,
+      ${UserFields.username} $stringType,
+      ${UserFields.password} $stringType,
+      ${UserFields.name} $stringType,
+      ${UserFields.profilePicture} $stringType,
+      ${UserFields.backgroundPicture} $stringType,
+      ${UserFields.address} $stringType
+    )
+    ''');
   }
 
   Future<Worker> create(Worker worker) async {
@@ -83,6 +125,24 @@ class WorkersDatabase {
     final id = await db.insert(tableWorkers, worker.toMap());
 
     return worker.copy(id: id, name: '');
+  }
+
+  Future<int> createUser(User user) async {
+    final db = await instance.database;
+
+    final id = await db.insert(tableUser, user.toMap());
+
+    return id;
+  }
+
+  Future createOrder(int userId, int workerId, String? observation,
+      double price, String address, String date, String turn) async {
+    final db = await instance.database;
+
+    final id = await db.rawInsert(
+        'INSERT INTO order(userId,workerId,observation,price,address,date,turn) VALUES($userId,$workerId,$observation,$price,$address,$date,$turn)');
+
+    return;
   }
 
   Future<Turn> createTurn(Turn turn) async {
@@ -122,11 +182,7 @@ class WorkersDatabase {
     final maps = await db
         .rawQuery("SELECT * FROM workers WHERE category = '$categoryName'");
 
-    if (maps.isNotEmpty) {
-      return maps.map((json) => Worker.fromJson(json)).toList();
-    } else {
-      throw Exception('Category $categoryName not found');
-    }
+    return maps.map((json) => Worker.fromJson(json)).toList();
   }
 
   Future<List<Worker>> readWorkerByFilter(
