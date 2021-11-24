@@ -30,5 +30,7 @@
     "agendarBtn": "Schedule",
     "trabalhosAntigos": "Old works:",
     "enviar": "Send",
-    "confirmaAgendamento": "Schedulling Confirmation"
+    "confirmaAgendamento": "Schedulling Confirmation",
+    "observacao": "Observation",
+    "preco": "Price"
 }

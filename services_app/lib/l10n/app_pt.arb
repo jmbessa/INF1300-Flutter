@@ -30,5 +30,7 @@
     "agendarBtn": "Agendar",
     "trabalhosAntigos": "Trabalhos antigos:",
     "enviar": "Enviar",
-    "confirmaAgendamento": "Confirmação de Agendamento"
+    "confirmaAgendamento": "Confirmação de Agendamento",
+    "observacao": "Observação",
+    "preco": "Preço"
 }

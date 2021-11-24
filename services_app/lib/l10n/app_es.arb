@@ -30,5 +30,7 @@
     "agendarBtn": "Para programar",
     "trabalhosAntigos": "Obras antiguas:",
     "enviar": "Mandar",
-    "confirmaAgendamento": "Confirmación de programación"
+    "confirmaAgendamento": "Confirmación de programación",
+    "observacao": "Observación",
+    "preco": "Precio"
 }

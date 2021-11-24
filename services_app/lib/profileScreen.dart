@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:services_app/notification_api.dart';
 import 'themes.dart';
 import 'widgets/sideMenu.dart';
 import 'workers.dart';
@@ -152,6 +153,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: defaultTheme.primaryColor,
         onPressed: () {
+          NotificationApi.showNotification(
+              title: 'Confirmação de agendamento',
+              body: 'Confirmando agendamento do serviço desejado');
           Navigator.pushNamed(context, '/confirmation',
               arguments: {'worker': worker});
         },

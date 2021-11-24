@@ -68,7 +68,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "Observação",
+            AppLocalizations.of(context)!.observacao,
             style: const TextStyle(
                 fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
           ),
@@ -118,7 +118,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "Preço",
+            AppLocalizations.of(context)!.preco,
             style: const TextStyle(
                 fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
           ),
@@ -221,7 +221,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           foregroundColor: Colors.black,
           leading: BackButton(color: Colors.black),
           title: Text(
-            "Confirmação de agendamento",
+            AppLocalizations.of(context)!.confirmaAgendamento,
             style: TextStyle(color: Colors.black),
           ),
         ),
