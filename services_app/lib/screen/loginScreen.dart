@@ -3,6 +3,7 @@ import '../models/user.dart';
 import '../screen/myHome.dart';
 import '../services/response/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:services_app/database/database_connection.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -36,6 +37,14 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
         _response.doLogin(_username, _password);
       });
     }
+  }
+
+  Future<int> getId(String username) async {
+    Future<int> id;
+
+    id = WorkersDatabase.instance.getUserId(username);
+
+    return id;
   }
 
   void _showSnackBar(String text) {

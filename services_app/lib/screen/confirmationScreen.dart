@@ -5,6 +5,7 @@ import '../models/profile.dart';
 import '../widgets/sideMenu.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../database/database_connection.dart';
+import 'loginScreen.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final Worker? worker;

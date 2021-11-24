@@ -51,8 +51,7 @@ class WorkersDatabase {
     final doubleType = 'DOUBLE NULL';
     final descriptionType = 'VARCHAR(500) NULL';
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableWorkers (
       ${WorkersFields.id} $idType,
       ${WorkersFields.name} $stringType,
@@ -66,16 +65,14 @@ class WorkersDatabase {
     )
     ''');
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableTurn (
       ${TurnFields.id} $idType,
       ${TurnFields.description} $stringType
     )
     ''');
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableCategory (
       ${CategoryFields.id} $idType,
       ${CategoryFields.description} $stringType,
@@ -194,6 +191,18 @@ class WorkersDatabase {
             '$WorkersFields.category = $categoryName && $WorkersFields.turn = $turn');
 
     return maps.map((json) => Worker.fromJson(json)).toList();
+  }
+
+  Future<int> getUserId(String username) async {
+    final db = await instance.database;
+    final maps =
+        await db.rawQuery("SELECT id FROM user WHERE username = $username");
+
+    if (maps.isNotEmpty) {
+      return User.fromMap(maps.first).id;
+    } else {
+      throw Exception('Username $username not found');
+    }
   }
 
   Future<Turn> readTurn(int id) async {

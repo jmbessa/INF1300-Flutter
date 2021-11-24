@@ -38,6 +38,7 @@ class User {
 
   String get username => _username;
   String get password => _password;
+  int get id => _id;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
