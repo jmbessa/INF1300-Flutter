@@ -15,6 +15,7 @@ class LoginResponse {
     loginRequest
         .getLogin(username, password)
         .then((user) => _callBack.onLoginSuccess(user!))
-        .catchError((onError) => _callBack.onLoginError(onError.toString()));
+        .catchError(
+            (onError) => _callBack.onLoginError("Usuario ou senha invalidos"));
   }
 }

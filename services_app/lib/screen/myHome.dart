@@ -109,10 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
           label: AppLocalizations.of(context)!.home,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.design_services_rounded),
-          label: AppLocalizations.of(context)!.corrente,
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.access_time_rounded),
           label: AppLocalizations.of(context)!.agendado,
         ),

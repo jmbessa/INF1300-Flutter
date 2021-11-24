@@ -3,7 +3,11 @@ import '../models/user.dart';
 import '../screen/myHome.dart';
 import '../services/response/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+<<<<<<< HEAD
 import 'package:services_app/database/database_connection.dart';
+=======
+import '../themes.dart';
+>>>>>>> 86d0387b1da99792b1a7d2be64aaec84b02a13af
 
 class LoginPage extends StatefulWidget {
   @override
@@ -83,15 +87,21 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     switch (_loginStatus) {
       case LoginStatus.notSignIn:
         _ctx = context;
-        var loginBtn = new RaisedButton(
-          onPressed: _submit,
-          child: new Text("Login"),
-          color: Colors.green,
-        );
         var loginForm = new Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new Form(
+            Container(
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/logo_size.jpg"),
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                ),
+              ),
+            ),
+            Form(
               key: formKey,
               child: new Column(
                 children: <Widget>[
@@ -105,6 +115,9 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
                   new Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: new TextFormField(
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
                       onSaved: (val) => _password = val!,
                       decoration: new InputDecoration(labelText: "Password"),
                     ),
@@ -112,21 +125,33 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
                 ],
               ),
             ),
-            loginBtn
           ],
         );
 
         return new Scaffold(
-          appBar: new AppBar(
-            title: new Text("Login Page"),
-          ),
-          key: scaffoldKey,
-          body: new Container(
-            child: new Center(
-              child: loginForm,
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              foregroundColor: defaultTheme.backgroundColor,
+              elevation: 0,
             ),
-          ),
-        );
+            key: scaffoldKey,
+            body: new Container(
+              child: new Center(
+                child: loginForm,
+              ),
+            ),
+            floatingActionButton: FloatingActionButton.extended(
+              backgroundColor: defaultTheme.primaryColor,
+              onPressed: _submit,
+              label: Text(
+                "Login",
+                style: buttonTheme.textTheme.bodyText1,
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            resizeToAvoidBottomInset: false);
         break;
       case LoginStatus.signIn:
         return MyHomePage(signOut);

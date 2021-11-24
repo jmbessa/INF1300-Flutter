@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../themes.dart';
 import '../models/workers.dart';
@@ -21,9 +22,12 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
   late String? _hour;
   late String _estimatedTime;
   late String _price;
-  late String _observation;
+  late String observation;
   late String? dateText;
-  String? dropdownValue;
+  late String confirmationAddress;
+  String? globalDropdownValue;
+  final formKey = new GlobalKey<FormState>();
+  final formKey2 = new GlobalKey<FormState>();
   //String _phoneNumber;
 
   Future pickDate(BuildContext context) async {
@@ -55,23 +59,66 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
   }
 
   Widget _buildAddress() {
-    return TextFormField(
-      decoration: InputDecoration(
-          labelText: address != null ? address.toString() : '',
-          floatingLabelBehavior: FloatingLabelBehavior.never),
-      maxLength: 40,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Address is Required';
-        }
-        return null;
-      },
-      onSaved: (value) {
-        setState(() {
-          address = value!;
+    Future<String> _address = WorkersDatabase.instance.readAdress(1);
+    return FutureBuilder(
+        future: _address,
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = <Widget>[
+              Form(
+                key: formKey,
+                child: TextFormField(
+                  initialValue:
+                      snapshot.data != null ? snapshot.data.toString() : '',
+                  maxLength: 40,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Address is Required';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    setState(() {
+                      confirmationAddress = value!;
+                    });
+                  },
+                ),
+              )
+            ];
+          } else if (snapshot.hasError) {
+            children = <Widget>[
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Error: ${snapshot.error}'),
+              )
+            ];
+          } else {
+            children = const <Widget>[
+              SizedBox(
+                child: CircularProgressIndicator(),
+                width: 60,
+                height: 60,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text('Awaiting result...'),
+              )
+            ];
+          }
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: children,
+            ),
+          );
         });
-      },
-    );
   }
 
   Widget _buildObservation() {
@@ -87,12 +134,20 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           ),
         ),
       ),
-      TextField(
-        decoration: InputDecoration(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-        keyboardType: TextInputType.multiline,
-        maxLines: null,
+      Form(
+        key: formKey2,
+        child: TextFormField(
+          decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          onSaved: (value) {
+            setState(() {
+              observation = value!;
+            });
+          },
+        ),
       )
     ]);
   }
@@ -185,9 +240,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   borderRadius:
                       const BorderRadius.all(const Radius.circular(5)))),
           onChanged: (String? newValue) {
-            setState(() {
-              dropdownValue = newValue!;
-            });
+            globalDropdownValue = newValue;
           },
           hint: Container(
             child: Text(
@@ -252,7 +305,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 ),
                 _buildAddress(),
                 _buildDate(),
-                _buildTurn(worker, dropdownValue),
+                _buildTurn(worker, globalDropdownValue),
                 _buildPrice(worker),
                 _buildObservation(),
                 SizedBox(height: 100),
@@ -268,8 +321,16 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           ),
           backgroundColor: buttonTheme.primaryColor,
           onPressed: () {
-            WorkersDatabase.instance.createOrder(1, worker!.id!, "testando",
-                worker.price!, address!, dateText!, dropdownValue!);
+            formKey.currentState!.save();
+            formKey2.currentState!.save();
+            WorkersDatabase.instance.createOrder(
+                1,
+                worker!.id!,
+                observation,
+                worker.price!,
+                confirmationAddress,
+                dateText!,
+                globalDropdownValue!);
             Navigator.of(context).popUntil((route) => route.isFirst);
           }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

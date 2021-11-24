@@ -6,6 +6,7 @@ final ThemeData buttonTheme = _buildButtonTheme();
 ThemeData _buildButtonTheme() {
   return ThemeData(
       primaryColor: Colors.teal,
+      backgroundColor: Colors.grey,
       textTheme: TextTheme(
           bodyText1: const TextStyle(
               fontFamily: "Helvetica",

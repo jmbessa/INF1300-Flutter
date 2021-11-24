@@ -137,7 +137,7 @@ class WorkersDatabase {
     final db = await instance.database;
 
     final id = await db.rawInsert(
-        'INSERT INTO order(userId,workerId,observation,price,address,date,turn) VALUES($userId,$workerId,$observation,$price,$address,$date,$turn)');
+        'INSERT INTO requestOrder(userId,workerId,observation,price,address,date,turn) VALUES($userId,$workerId,"$observation",$price,"$address","$date","$turn")');
 
     return;
   }
@@ -215,6 +215,19 @@ class WorkersDatabase {
       return Turn.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
+    }
+  }
+
+  Future<String> readAdress(int userId) async {
+    final db = await instance.database;
+
+    final maps = await db.query(tableUser,
+        columns: UserFields.values, where: '${UserFields.id} = $userId');
+
+    if (maps.isNotEmpty) {
+      return User.fromMap(maps.first).address;
+    } else {
+      throw Exception('ID $userId not found');
     }
   }
 
