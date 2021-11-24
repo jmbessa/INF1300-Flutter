@@ -244,7 +244,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   margin: EdgeInsets.fromLTRB(0, 10, 25, 0),
                   child: SizedBox(
                     child: Text(
-                      "Insira seu endereço",
+                      AppLocalizations.of(context)!.insereEndereco,
                       style: defaultTheme.textTheme.bodyText1,
                     ),
                   ),

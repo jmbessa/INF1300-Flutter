@@ -2,9 +2,10 @@ import 'dart:io';
 import '../themes.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:services_app/database/database_connection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'language_picker_widget.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SideMenu extends StatefulWidget {
   SideMenu({Key? key}) : super(key: key);
@@ -31,12 +32,36 @@ class _SideMenuState extends State<SideMenu> {
     "assets/faz-tudo.jpg",
   ];
 
+  Future takeProfilePhoto() async {
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        profileImage = pickedFile;
+        profileImagePath = profileImage!.path;
+      }
+    });
+  }
+
+  Future takeBackgroundPhoto() async {
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        backgroundImage = pickedFile;
+        backgroundImagePath = profileImage!.path;
+      }
+    });
+  }
+
   Future getProfileImage() async {
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      profileImage = pickedFile;
-      profileImagePath = profileImage!.path;
+      if (pickedFile != null) {
+        profileImage = pickedFile;
+        profileImagePath = profileImage!.path;
+      }
     });
   }
 
@@ -44,9 +69,35 @@ class _SideMenuState extends State<SideMenu> {
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      backgroundImage = pickedFile;
-      backgroundImagePath = profileImage!.path;
+      if (pickedFile != null) {
+        backgroundImage = pickedFile;
+        backgroundImagePath = profileImage!.path;
+      }
     });
+  }
+
+  void pickImage(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Wrap(children: [
+        ListTile(
+          leading: Icon(Icons.camera_alt),
+          title: Text('Camera'),
+          onTap: () {
+            Navigator.pop(context);
+            takeProfilePhoto();
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.photo_album),
+          title: Text('Gallery'),
+          onTap: () {
+            Navigator.pop(context);
+            getProfileImage();
+          },
+        ),
+      ]),
+    );
   }
 
   @override
@@ -59,7 +110,7 @@ class _SideMenuState extends State<SideMenu> {
               child: Column(
                 children: [
                   Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.center,
                       child: Stack(children: [
                         Text(
                             profileName != null
@@ -88,7 +139,7 @@ class _SideMenuState extends State<SideMenu> {
                   SizedBox(height: 2),
                   GestureDetector(
                     onTap: () async {
-                      getProfileImage();
+                      pickImage(context);
                     },
                     child: CircleAvatar(
                       radius: 47,
@@ -127,10 +178,13 @@ class _SideMenuState extends State<SideMenu> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            title: Text(AppLocalizations.of(context)!.config),
             onTap: () => {Navigator.of(context).pop()},
           ),
-          Container(child: LanguagePickerWidget())
+          SizedBox(height: 300),
+          Align(
+              alignment: Alignment.center,
+              child: Container(child: LanguagePickerWidget())),
         ],
       ),
     );

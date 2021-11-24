@@ -9,7 +9,6 @@ import 'package:services_app/models/order.dart';
 import 'package:services_app/models/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 class WorkersDatabase {
   static final WorkersDatabase instance = WorkersDatabase._init();
@@ -52,7 +51,8 @@ class WorkersDatabase {
     final doubleType = 'DOUBLE NULL';
     final descriptionType = 'VARCHAR(500) NULL';
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableWorkers (
       ${WorkersFields.id} $idType,
       ${WorkersFields.name} $stringType,
@@ -66,14 +66,16 @@ class WorkersDatabase {
     )
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableTurn (
       ${TurnFields.id} $idType,
       ${TurnFields.description} $stringType
     )
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableCategory (
       ${CategoryFields.id} $idType,
       ${CategoryFields.description} $stringType,

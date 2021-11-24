@@ -8,7 +8,7 @@
     "corrente": "Actual",
     "agendado": "Programado",
     "options": "Opciones",
-    "pintura": "Cuadro",
+    "pintura": "Pintura",
     "mecanica": "Mecánica",
     "limpeza": "Limpieza",
     "servicosResidenciais": "Servicios residenciales",
@@ -28,5 +28,7 @@
     "alteraBtn": "Cambio",
     "descricao": "Descripción",
     "agendarBtn": "Para programar",
-    "trabalhosAntigos": "Obras antiguas:"
+    "trabalhosAntigos": "Obras antiguas:",
+    "enviar": "Mandar",
+    "confirmaAgendamento": "Confirmación de programación"
 }

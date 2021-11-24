@@ -60,6 +60,17 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  String showDescriptions(String description) {
+    if (description == "Pintura")
+      return AppLocalizations.of(context)!.pintura;
+    else if (description == "Servicos Residenciais")
+      return AppLocalizations.of(context)!.servicosResidenciais;
+    else if (description == "Mecanica")
+      return AppLocalizations.of(context)!.mecanica;
+    else
+      return AppLocalizations.of(context)!.limpeza;
+  }
+
   Future _showNotificationWithSound() async {
     var adnroidPlatformChannelSpecifics = new AndroidNotificationDetails(
         'notification_channel_id', 'Channel Name');
@@ -74,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
         'How to Show Notification in Fllutter', platformChannelSpecifics,
         payload: 'Default_Sound');
   }
-
+  
   signOut() {
     setState(() {
       widget.signOut();
@@ -87,6 +98,33 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       value = preferences.getInt("value");
     });
+  }
+
+  Widget buildNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: AppLocalizations.of(context)!.home,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.design_services_rounded),
+          label: AppLocalizations.of(context)!.corrente,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.access_time_rounded),
+          label: AppLocalizations.of(context)!.agendado,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.dehaze_rounded),
+          label: AppLocalizations.of(context)!.options,
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Theme.of(context).primaryColor,
+      onTap: _onItemTapped,
+    );
   }
 
   @override
@@ -143,158 +181,134 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(color: defaultTheme.backgroundColor),
           ),
         ),
-      ),
-      body: FutureBuilder<List<CategoryObj>>(
-          future: categories,
-          builder: (BuildContext context,
-              AsyncSnapshot<List<CategoryObj>> snapshot) {
-            List<Widget> children;
-            if (snapshot.hasData) {
-              children = <Widget>[
-                GestureDetector(
-                    onPanStart: (DragStartDetails details) {
-                      initial = details.globalPosition.dx;
-                    },
-                    onPanUpdate: (DragUpdateDetails details) {
-                      double distance = details.globalPosition.dx - initial;
-                      if (distance < -20)
-                        _scaffoldKey.currentState?.openEndDrawer();
-                    },
-                    onPanEnd: (DragEndDetails details) {
-                      initial = 0;
-                    },
-                    child: Container(
-                      height: 400,
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        children: List.generate(snapshot.data!.length, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              //Category categoriaAtual = Category.values[index];
-                              //List<Worker> workers = WORKERS
-                              //    .where((element) => element.category == categoriaAtual)
-                              //    .toList();
-                              Navigator
-                                  .pushNamed(context, '/second', arguments: {
-                                'category': snapshot.data!
-                                    .where((element) => element.id == index + 1)
-                                    .map((e) => e.description)
-                                    .first
-                              });
-                            },
-                            child: FractionallySizedBox(
-                              heightFactor: 0.9,
-                              widthFactor: 0.9,
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                color: Colors.yellow,
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(snapshot.data!
-                                            .where((element) =>
-                                                element.id == index + 1)
-                                            .map((e) => e.imagePath)
-                                            .first),
-                                        fit: BoxFit.cover,
-                                        alignment: Alignment.topCenter,
+        body: FutureBuilder<List<CategoryObj>>(
+            future: categories,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<CategoryObj>> snapshot) {
+              List<Widget> children;
+              if (snapshot.hasData) {
+                children = <Widget>[
+                  GestureDetector(
+                      onPanStart: (DragStartDetails details) {
+                        initial = details.globalPosition.dx;
+                      },
+                      onPanUpdate: (DragUpdateDetails details) {
+                        double distance = details.globalPosition.dx - initial;
+                        if (distance < -20)
+                          _scaffoldKey.currentState?.openEndDrawer();
+                      },
+                      onPanEnd: (DragEndDetails details) {
+                        initial = 0;
+                      },
+                      child: Container(
+                        height: 400,
+                        child: GridView.count(
+                          crossAxisCount: 2,
+                          children:
+                              List.generate(snapshot.data!.length, (index) {
+                            String description = showDescriptions(snapshot.data!
+                                .where((element) => element.id == index + 1)
+                                .map((e) => e.description)
+                                .first);
+                            return GestureDetector(
+                              onTap: () {
+                                //Category categoriaAtual = Category.values[index];
+                                //List<Worker> workers = WORKERS
+                                //    .where((element) => element.category == categoriaAtual)
+                                //    .toList();
+                                Navigator.pushNamed(context, '/second',
+                                    arguments: {
+                                      'category': snapshot.data!
+                                          .where((element) =>
+                                              element.id == index + 1)
+                                          .map((e) => e.description)
+                                          .first
+                                    });
+                              },
+                              child: FractionallySizedBox(
+                                heightFactor: 0.9,
+                                widthFactor: 0.9,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0)),
+                                  color: Colors.yellow,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(snapshot.data!
+                                              .where((element) =>
+                                                  element.id == index + 1)
+                                              .map((e) => e.imagePath)
+                                              .first),
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.topCenter,
+                                        ),
                                       ),
-                                    ),
-                                    child: Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Stack(children: [
-                                          Text(
-                                              snapshot.data!
-                                                  .where((element) =>
-                                                      element.id == index + 1)
-                                                  .map((e) => e.description)
-                                                  .first,
+                                      child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Stack(children: [
+                                            Text(description,
+                                                style: TextStyle(
+                                                    fontFamily: defaultTheme
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .fontFamily,
+                                                    fontWeight: FontWeight.bold,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    foreground: Paint()
+                                                      ..style =
+                                                          PaintingStyle.stroke
+                                                      ..strokeWidth = 2
+                                                      ..color = Color.fromRGBO(
+                                                          0, 0, 0, 1))),
+                                            Text(
+                                              description,
                                               style: TextStyle(
-                                                  fontFamily: defaultTheme
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .fontFamily,
-                                                  fontWeight: FontWeight.bold,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  foreground: Paint()
-                                                    ..style =
-                                                        PaintingStyle.stroke
-                                                    ..strokeWidth = 2
-                                                    ..color = Color.fromRGBO(
-                                                        0, 0, 0, 1))),
-                                          Text(
-                                            snapshot.data!
-                                                .where((element) =>
-                                                    element.id == index + 1)
-                                                .map((e) => e.description)
-                                                .first,
-                                            style: TextStyle(
-                                              color: Colors.white,
+                                                color: Colors.white,
+                                              ),
                                             ),
-                                          ),
-                                        ]))),
+                                          ]))),
+                                ),
                               ),
-                            ),
-                          );
-                        }),
-                      ),
-                    ))
-              ];
-            } else if (snapshot.hasError) {
-              children = <Widget>[
-                const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
+                            );
+                          }),
+                        ),
+                      ))
+                ];
+              } else if (snapshot.hasError) {
+                children = <Widget>[
+                  const Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text('Error: ${snapshot.error}'),
+                  )
+                ];
+              } else {
+                children = const <Widget>[
+                  SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Awaiting result...'),
+                  )
+                ];
+              }
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: children,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text('Error: ${snapshot.error}'),
-                )
-              ];
-            } else {
-              children = const <Widget>[
-                SizedBox(
-                  child: CircularProgressIndicator(),
-                  width: 60,
-                  height: 60,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text('Awaiting result...'),
-                )
-              ];
-            }
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: children,
-              ),
-            );
-          }),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.access_time_rounded),
-            label: 'Agendado',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dehaze_rounded),
-            label: 'Options',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).primaryColor,
-        onTap: _onItemTapped,
-      ),
-    );
+              );
+            }),
+        bottomNavigationBar: buildNavigationBar());
   }
 }
