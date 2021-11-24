@@ -3,11 +3,8 @@ import '../models/user.dart';
 import '../screen/myHome.dart';
 import '../services/response/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-<<<<<<< HEAD
 import 'package:services_app/database/database_connection.dart';
-=======
 import '../themes.dart';
->>>>>>> 86d0387b1da99792b1a7d2be64aaec84b02a13af
 
 class LoginPage extends StatefulWidget {
   @override
