@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:services_app/category.dart';
-import 'package:services_app/workers.dart';
+import 'package:services_app/models/category.dart';
+import 'package:services_app/models/workers.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'themes.dart';
-import 'workers.dart';
-import 'widgets/sideMenu.dart';
-import 'database/database_connection.dart';
+import '../themes.dart';
+import '../models/workers.dart';
+import '../widgets/sideMenu.dart';
+import '../database/database_connection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage(this.signOut);
 
-  final String title;
+  final VoidCallback signOut;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
-    if (index == 3) {
+    if (index == 2) {
       _scaffoldKey.currentState?.openEndDrawer();
     }
   }
@@ -74,6 +75,20 @@ class _MyHomePageState extends State<MyHomePage> {
         payload: 'Default_Sound');
   }
 
+  signOut() {
+    setState(() {
+      widget.signOut();
+    });
+  }
+
+  var value;
+  getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      value = preferences.getInt("value");
+    });
+  }
+
   @override
   initState() {
     super.initState();
@@ -87,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: selectNotification);
+    getPref();
   }
 
   final Future<List<CategoryObj>> categories =
@@ -111,7 +127,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          actions: <Widget>[Container()],
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                signOut();
+              },
+              icon: Icon(Icons.lock_open),
+            )
+          ],
           backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: defaultTheme.backgroundColor,
@@ -258,10 +281,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.design_services_rounded),
-            label: 'Corrente',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.access_time_rounded),

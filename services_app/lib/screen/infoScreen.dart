@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'themes.dart';
-import 'widgets/sideMenu.dart';
-import 'workers.dart';
+import '../themes.dart';
+import '../widgets/sideMenu.dart';
+import '../models/workers.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InfoScreen extends StatefulWidget {

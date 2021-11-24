@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'themes.dart';
-import 'workers.dart';
-import 'widgets/sideMenu.dart';
+import '../themes.dart';
+import '../models/workers.dart';
+import '../models/profile.dart';
+import '../widgets/sideMenu.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../database/database_connection.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final Worker? worker;
@@ -19,6 +21,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
   late String _estimatedTime;
   late String _price;
   late String _observation;
+  late String? dateText;
+  String? dropdownValue;
   //String _phoneNumber;
 
   Future pickDate(BuildContext context) async {
@@ -37,8 +41,14 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
 
   String getText() {
     if (_date == null) {
+      setState(() {
+        dateText = null;
+      });
       return AppLocalizations.of(context)!.escolhaData;
     } else {
+      setState(() {
+        dateText = '${_date!.day}/${_date!.month}/${_date!.year}';
+      });
       return '${_date!.day}/${_date!.month}/${_date!.year}';
     }
   }
@@ -56,7 +66,9 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         return null;
       },
       onSaved: (value) {
-        address = value!;
+        setState(() {
+          address = value!;
+        });
       },
     );
   }
@@ -141,18 +153,18 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     ]);
   }
 
-  Widget _buildTurn(Worker? worker) {
+  Widget _buildTurn(Worker? worker, String? dropdownValue) {
     String novaString;
-    Turnos? dropdownValue;
+
     _turn = '';
 
     if (worker!.turn.length >= 2) {
       for (var i = 0; i < worker.turn.length; i++) {
-        novaString = worker.turn[i].toString().split('.').last;
+        novaString = worker.turn[i].toString();
         _turn = _turn + novaString;
       }
     } else
-      _turn = worker.turn.toString().split('.').last;
+      _turn = worker.turn.toString();
 
     return Column(children: <Widget>[
       Padding(
@@ -164,22 +176,14 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
       ),
       SizedBox(
         width: double.infinity,
-        child: TextFormField(
-          initialValue: worker.turn,
-          decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-        )
-        /* child: DropdownButtonFormField<Turnos>(
+        child: DropdownButtonFormField<String>(
           isExpanded: true,
           value: dropdownValue,
           decoration: InputDecoration(
               border: OutlineInputBorder(
                   borderRadius:
                       const BorderRadius.all(const Radius.circular(5)))),
-          onChanged: (Turnos? newValue) {
+          onChanged: (String? newValue) {
             setState(() {
               dropdownValue = newValue!;
             });
@@ -190,18 +194,20 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
               textAlign: TextAlign.start,
             ),
           ),
-          items: worker.turn.map<DropdownMenuItem<Turnos>>((Turnos value) {
-            return DropdownMenuItem<Turnos>(
+          items: worker.turn
+              .split(",")
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
               value: value,
               child: Container(
                 child: Text(
-                  value.toString().split('.').last,
+                  value.toString(),
                   textAlign: TextAlign.start,
                 ),
               ),
             );
           }).toList(),
-        ), */
+        ),
       ),
     ]);
   }
@@ -245,7 +251,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 ),
                 _buildAddress(),
                 _buildDate(),
-                _buildTurn(worker),
+                _buildTurn(worker, dropdownValue),
                 _buildPrice(worker),
                 _buildObservation(),
                 SizedBox(height: 100),
@@ -261,6 +267,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           ),
           backgroundColor: buttonTheme.primaryColor,
           onPressed: () {
+            WorkersDatabase.instance.createOrder(1, worker!.id!, "testando",
+                worker.price!, address!, dateText!, dropdownValue!);
             Navigator.of(context).popUntil((route) => route.isFirst);
           }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
