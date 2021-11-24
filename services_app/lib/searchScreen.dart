@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:services_app/workers.dart';
+import 'models/turn.dart';
+import 'models/workers.dart';
 import 'themes.dart';
-import 'workers.dart';
-import 'turn.dart';
 import 'database/database_connection.dart';
 import 'dart:async';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

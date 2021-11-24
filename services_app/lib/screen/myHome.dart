@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
         'How to Show Notification in Fllutter', platformChannelSpecifics,
         payload: 'Default_Sound');
   }
-  
+
   signOut() {
     setState(() {
       widget.signOut();
@@ -155,32 +155,32 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      key: _scaffoldKey,
-      endDrawer: Container(
-        width: 250,
-        child: SideMenu(),
-      ),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
-        child: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                signOut();
-              },
-              icon: Icon(Icons.lock_open),
-            )
-          ],
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          foregroundColor: defaultTheme.backgroundColor,
-          title: Text(
-            AppLocalizations.of(context)!.categorias,
-            style: TextStyle(color: defaultTheme.backgroundColor),
-          ),
+        key: _scaffoldKey,
+        endDrawer: Container(
+          width: 250,
+          child: SideMenu(),
         ),
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50.0),
+            child: AppBar(
+              // Here we take the value from the MyHomePage object that was created by
+              // the App.build method, and use it to set our appbar title.
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {
+                    signOut();
+                  },
+                  icon: Icon(Icons.lock_open),
+                )
+              ],
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              foregroundColor: defaultTheme.backgroundColor,
+              title: Text(
+                AppLocalizations.of(context)!.categorias,
+                style: TextStyle(color: defaultTheme.backgroundColor),
+              ),
+            )),
         body: FutureBuilder<List<CategoryObj>>(
             future: categories,
             builder: (BuildContext context,

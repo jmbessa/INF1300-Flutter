@@ -190,7 +190,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           },
           hint: Container(
             child: Text(
-              "Escolha o turno",
+              AppLocalizations.of(context)!.escolhaTurno,
               textAlign: TextAlign.start,
             ),
           ),
