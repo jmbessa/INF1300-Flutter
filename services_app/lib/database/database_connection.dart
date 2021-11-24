@@ -51,8 +51,7 @@ class WorkersDatabase {
     final doubleType = 'DOUBLE NULL';
     final descriptionType = 'VARCHAR(500) NULL';
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableWorkers (
       ${WorkersFields.id} $idType,
       ${WorkersFields.name} $stringType,
@@ -66,16 +65,14 @@ class WorkersDatabase {
     )
     ''');
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableTurn (
       ${TurnFields.id} $idType,
       ${TurnFields.description} $stringType
     )
     ''');
 
-    await db.execute(
-        '''
+    await db.execute('''
     CREATE TABLE $tableCategory (
       ${CategoryFields.id} $idType,
       ${CategoryFields.description} $stringType,
@@ -140,7 +137,7 @@ class WorkersDatabase {
     final db = await instance.database;
 
     final id = await db.rawInsert(
-        'INSERT INTO order(userId,workerId,observation,price,address,date,turn) VALUES($userId,$workerId,$observation,$price,$address,$date,$turn)');
+        'INSERT INTO requestOrder(userId,workerId,observation,price,address,date,turn) VALUES($userId,$workerId,"$observation",$price,"$address","$date","$turn")');
 
     return;
   }
@@ -206,6 +203,19 @@ class WorkersDatabase {
       return Turn.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
+    }
+  }
+
+  Future<String> readAdress(int userId) async {
+    final db = await instance.database;
+
+    final maps = await db.query(tableUser,
+        columns: UserFields.values, where: '${UserFields.id} = $userId');
+
+    if (maps.isNotEmpty) {
+      return User.fromMap(maps.first).address;
+    } else {
+      throw Exception('ID $userId not found');
     }
   }
 
