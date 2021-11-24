@@ -28,5 +28,7 @@
     "alteraBtn": "Alterar",
     "descricao": "Descrição",
     "agendarBtn": "Agendar",
-    "trabalhosAntigos": "Trabalhos antigos:"
+    "trabalhosAntigos": "Trabalhos antigos:",
+    "enviar": "Enviar",
+    "confirmaAgendamento": "Confirmação de Agendamento"
 }

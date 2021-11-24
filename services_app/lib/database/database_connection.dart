@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:services_app/workers.dart';
 import 'package:services_app/turn.dart';
 import 'package:services_app/category.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 class WorkersDatabase {
   static final WorkersDatabase instance = WorkersDatabase._init();
@@ -46,7 +44,8 @@ class WorkersDatabase {
     final decimalType = 'DECIMAL(5, 2) NULL';
     final descriptionType = 'VARCHAR(500) NULL';
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableWorkers (
       ${WorkersFields.id} $idType,
       ${WorkersFields.name} $stringType,
@@ -60,14 +59,16 @@ class WorkersDatabase {
     )
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableTurn (
       ${TurnFields.id} $idType,
       ${TurnFields.description} $stringType
     )
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
     CREATE TABLE $tableCategory (
       ${CategoryFields.id} $idType,
       ${CategoryFields.description} $stringType,

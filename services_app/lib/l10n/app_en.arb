@@ -28,5 +28,7 @@
     "alteraBtn": "Change",
     "descricao": "Description",
     "agendarBtn": "Schedule",
-    "trabalhosAntigos": "Old works:"
+    "trabalhosAntigos": "Old works:",
+    "enviar": "Send",
+    "confirmaAgendamento": "Schedulling Confirmation"
 }

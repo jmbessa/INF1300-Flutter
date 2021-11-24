@@ -163,16 +163,16 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 style: defaultTheme.textTheme.bodyText1)),
       ),
       SizedBox(
-        width: double.infinity,
-        child: TextFormField(
-          initialValue: worker.turn,
-          decoration: InputDecoration(
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
-        )
-        /* child: DropdownButtonFormField<Turnos>(
+          width: double.infinity,
+          child: TextFormField(
+            initialValue: worker.turn,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0))),
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+          )
+          /* child: DropdownButtonFormField<Turnos>(
           isExpanded: true,
           value: dropdownValue,
           decoration: InputDecoration(
@@ -202,7 +202,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
             );
           }).toList(),
         ), */
-      ),
+          ),
     ]);
   }
 
@@ -238,7 +238,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   margin: EdgeInsets.fromLTRB(0, 10, 25, 0),
                   child: SizedBox(
                     child: Text(
-                      "Insira seu endereço",
+                      AppLocalizations.of(context)!.insereEndereco,
                       style: defaultTheme.textTheme.bodyText1,
                     ),
                   ),

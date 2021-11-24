@@ -5,6 +5,7 @@ import 'themes.dart';
 import 'widgets/sideMenu.dart';
 import 'workers.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InfoScreen extends StatefulWidget {
   InfoScreen({Key? key}) : super(key: key);
@@ -44,8 +45,9 @@ class _InfoScreenState extends State<InfoScreen> {
   Widget _buildProfileName() {
     return TextField(
       decoration: InputDecoration(
-          labelText:
-              profileName != null ? profileName.toString() : 'Escolha seu nome',
+          labelText: profileName != null
+              ? profileName.toString()
+              : AppLocalizations.of(context)!.escolhaNome,
           floatingLabelBehavior: FloatingLabelBehavior.never),
       maxLength: 40,
       onChanged: (value) {
@@ -58,8 +60,9 @@ class _InfoScreenState extends State<InfoScreen> {
     return TextField(
       focusNode: focusNode,
       decoration: InputDecoration(
-          labelText:
-              address != null ? address.toString() : 'Insira seu endereço',
+          labelText: address != null
+              ? address.toString()
+              : AppLocalizations.of(context)!.insereEndereco,
           floatingLabelBehavior: FloatingLabelBehavior.never),
       maxLength: 40,
       onChanged: (value) {
@@ -74,7 +77,7 @@ class _InfoScreenState extends State<InfoScreen> {
       onPressed: () {
         Navigator.popUntil(context, (route) => route.isFirst);
       },
-      label: Text("Alterar"),
+      label: Text(AppLocalizations.of(context)!.alteraBtn),
     );
   }
 
@@ -100,7 +103,7 @@ class _InfoScreenState extends State<InfoScreen> {
               margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
               child: SizedBox(
                 child: Text(
-                  "Altere seu nome aqui:",
+                  AppLocalizations.of(context)!.alteraNome,
                   style: defaultTheme.textTheme.bodyText1,
                 ),
               ),
@@ -114,7 +117,7 @@ class _InfoScreenState extends State<InfoScreen> {
               margin: EdgeInsets.fromLTRB(25, 0, 25, 5),
               child: SizedBox(
                 child: Text(
-                  "Altere sua foto de perfil aqui:",
+                  AppLocalizations.of(context)!.alteraFoto,
                   style: defaultTheme.textTheme.bodyText1,
                 ),
               ),
@@ -148,7 +151,7 @@ class _InfoScreenState extends State<InfoScreen> {
               margin: EdgeInsets.fromLTRB(25, 10, 25, 5),
               child: SizedBox(
                 child: Text(
-                  "Altere sua foto de fundo aqui:",
+                  AppLocalizations.of(context)!.alteraFundo,
                   style: defaultTheme.textTheme.bodyText1,
                 ),
               ),
@@ -173,7 +176,7 @@ class _InfoScreenState extends State<InfoScreen> {
               margin: EdgeInsets.fromLTRB(25, 10, 25, 0),
               child: SizedBox(
                 child: Text(
-                  "Altere seu endereco aqui:",
+                  AppLocalizations.of(context)!.alteraEndereco,
                   style: defaultTheme.textTheme.bodyText1,
                 ),
               ),
