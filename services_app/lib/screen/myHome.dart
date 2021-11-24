@@ -157,27 +157,26 @@ class _MyHomePageState extends State<MyHomePage> {
           child: SideMenu(),
         ),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0),
-          child: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {
-                  signOut();
-                },
-                icon: Icon(Icons.lock_open),
-              )
-            ],
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            foregroundColor: defaultTheme.backgroundColor,
-            title: Text(
-              AppLocalizations.of(context)!.categorias,
-              style: TextStyle(color: defaultTheme.backgroundColor),
-            ),
-          ),
-        ),
+            preferredSize: Size.fromHeight(50.0),
+            child: AppBar(
+              // Here we take the value from the MyHomePage object that was created by
+              // the App.build method, and use it to set our appbar title.
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {
+                    signOut();
+                  },
+                  icon: Icon(Icons.lock_open),
+                )
+              ],
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              foregroundColor: defaultTheme.backgroundColor,
+              title: Text(
+                AppLocalizations.of(context)!.categorias,
+                style: TextStyle(color: defaultTheme.backgroundColor),
+              ),
+            )),
         body: FutureBuilder<List<CategoryObj>>(
             future: categories,
             builder: (BuildContext context,
