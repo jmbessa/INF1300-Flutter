@@ -5,6 +5,7 @@ import 'package:services_app/l10n/l10n.dart';
 import 'package:services_app/models/workers.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screen/infoScreen.dart';
+import 'screen/ordersScreen.dart';
 import 'screen/searchScreen.dart';
 import 'screen/profileScreen.dart';
 import 'screen/confirmationScreen.dart';
@@ -110,6 +111,7 @@ class MyApp extends StatelessWidget {
                     category: "",
                   ),
               '/profile': (context) => ProfileScreen(worker: null),
+              '/order': (context) => OrdersScreen(),
               '/confirmation': (context) => ConfirmationScreen(),
               '/info': (context) => InfoScreen(),
             },

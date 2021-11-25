@@ -1,4 +1,4 @@
-final String tableOrder = 'orders';
+final String tableOrder = 'requestOrder';
 
 class OrderFields {
   static final List<String> values = [
