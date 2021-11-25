@@ -40,7 +40,7 @@ class NotificationApi {
   }) async =>
       _notifications.show(
         id,
-        title,
+        title = 'FACILITEI',
         body,
         await _notificationDetails(),
         payload: payload,

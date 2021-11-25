@@ -35,11 +35,57 @@ class _InfoScreenState extends State<InfoScreen> {
     });
   }
 
+  Future takeProfilePhoto() async {
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        profileImage = pickedFile;
+        profileImagePath = profileImage!.path;
+      }
+    });
+  }
+
+  Future takeBackgroundPhoto() async {
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        backgroundImage = pickedFile;
+        backgroundImagePath = profileImage!.path;
+      }
+    });
+  }
+
   Future setProfileName() async {
     String name = TextInputType.text as String;
     setState(() {
       profileName = name;
     });
+  }
+
+  void pickImage(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Wrap(children: [
+        ListTile(
+          leading: Icon(Icons.camera_alt),
+          title: Text(AppLocalizations.of(context)!.camera),
+          onTap: () {
+            Navigator.pop(context);
+            takeProfilePhoto();
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.photo_album),
+          title: Text(AppLocalizations.of(context)!.galeria),
+          onTap: () {
+            Navigator.pop(context);
+            getProfileImage();
+          },
+        ),
+      ]),
+    );
   }
 
   Widget _buildProfileName() {
@@ -124,7 +170,7 @@ class _InfoScreenState extends State<InfoScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                getProfileImage();
+                pickImage(context);
               },
               child: CircleAvatar(
                 radius: 47,
@@ -158,7 +204,7 @@ class _InfoScreenState extends State<InfoScreen> {
             ),
             GestureDetector(
               onTap: () async {
-                getBackgroundImage();
+                pickImage(context);
               },
               child: Container(
                 height: 200,

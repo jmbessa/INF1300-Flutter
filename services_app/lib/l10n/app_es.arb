@@ -37,5 +37,6 @@
     "usuario": "Usuario",
     "senha": "Contraseña",
     "camera": "Cámara",
-    "galeria": "Galería"
+    "galeria": "Galería",
+    "login": "Iniciar Sesión"
 }

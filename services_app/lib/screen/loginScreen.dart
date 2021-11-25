@@ -138,7 +138,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
               backgroundColor: defaultTheme.primaryColor,
               onPressed: _submit,
               label: Text(
-                "Login",
+                AppLocalizations.of(context)!.login,
                 style: buttonTheme.textTheme.bodyText1,
               ),
             ),
@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             resizeToAvoidBottomInset: false);
         break;
       case LoginStatus.signIn:
-        _id = WorkersDatabase.instance.getUserId(_username);
+        //_id = WorkersDatabase.instance.getUserId(_username);
         return MyHomePage(signOut);
     }
   }
