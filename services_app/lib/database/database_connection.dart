@@ -325,6 +325,16 @@ class WorkersDatabase {
     );
   }
 
+  Future<int> deleteOrder(int id) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      tableOrder,
+      where: '${OrderFields.id} = ?',
+      whereArgs: [id],
+    );
+  }
+
   Future close() async {
     final db = await instance.database;
 

@@ -7,6 +7,7 @@ import 'language_picker_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../database/database_connection.dart';
+import 'package:services_app/models/user.dart';
 
 class SideMenu extends StatefulWidget {
   SideMenu({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class SideMenu extends StatefulWidget {
   _SideMenuState createState() => _SideMenuState();
 }
 
-WorkersDatabase.instance.
+Future<User> user = WorkersDatabase.instance.readUser(1);
 
 XFile? profileImage;
 String profileImagePath = "assets/materiais-para-pintura.jpg";
@@ -109,69 +110,7 @@ class _SideMenuState extends State<SideMenu> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-              child: Column(
-                children: [
-                  Align(
-                      alignment: Alignment.center,
-                      child: Stack(children: [
-                        Text(
-                            profileName != null
-                                ? profileName.toString()
-                                : AppLocalizations.of(context)!.escolhaNome,
-                            style: TextStyle(
-                                fontFamily: defaultTheme
-                                    .textTheme.bodyText1!.fontFamily,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                                backgroundColor: Colors.transparent,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 2
-                                  ..color = defaultTheme.shadowColor)),
-                        Text(
-                            profileName != null
-                                ? profileName.toString()
-                                : AppLocalizations.of(context)!.escolhaNome,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: defaultTheme
-                                    .textTheme.bodyText1!.fontFamily,
-                                fontSize: 22)),
-                      ])),
-                  SizedBox(height: 2),
-                  GestureDetector(
-                    onTap: () async {
-                      pickImage(context);
-                    },
-                    child: CircleAvatar(
-                      radius: 47,
-                      backgroundColor: defaultTheme.shadowColor,
-                      child: profileImage != null
-                          ? ClipOval(
-                              child: Image.file(File(profileImagePath),
-                                  fit: BoxFit.cover, width: 90, height: 90))
-                          : Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(50)),
-                              width: 100,
-                              height: 100,
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Colors.grey[800],
-                              ),
-                            ),
-                    ),
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: defaultTheme.backgroundColor,
-                image: DecorationImage(
-                    image: FileImage(File(backgroundImagePath)),
-                    fit: BoxFit.cover),
-              )),
+          buildHeader(),
           ListTile(
             leading: Icon(Icons.verified_user),
             title: Text(AppLocalizations.of(context)!.perfil),
@@ -186,10 +125,75 @@ class _SideMenuState extends State<SideMenu> {
           ),
           SizedBox(height: 300),
           Align(
-              alignment: Alignment.center,
-              child: Container(child: LanguagePickerWidget())),
+              alignment: Alignment.bottomRight,
+              child: Container(height: 280, child: LanguagePickerWidget())),
         ],
       ),
     );
+  }
+
+  Widget buildHeader() {
+    return DrawerHeader(
+        child: Column(
+          children: [
+            Align(
+                alignment: Alignment.center,
+                child: Stack(children: [
+                  Text(
+                      profileName != null
+                          ? profileName.toString()
+                          : AppLocalizations.of(context)!.escolhaNome,
+                      style: TextStyle(
+                          fontFamily:
+                              defaultTheme.textTheme.bodyText1!.fontFamily,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                          backgroundColor: Colors.transparent,
+                          foreground: Paint()
+                            ..style = PaintingStyle.stroke
+                            ..strokeWidth = 2
+                            ..color = defaultTheme.shadowColor)),
+                  Text(
+                      profileName != null
+                          ? profileName.toString()
+                          : AppLocalizations.of(context)!.escolhaNome,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily:
+                              defaultTheme.textTheme.bodyText1!.fontFamily,
+                          fontSize: 22)),
+                ])),
+            SizedBox(height: 2),
+            GestureDetector(
+              onTap: () async {
+                pickImage(context);
+              },
+              child: CircleAvatar(
+                radius: 47,
+                backgroundColor: defaultTheme.shadowColor,
+                child: profileImage != null
+                    ? ClipOval(
+                        child: Image.file(File(profileImagePath),
+                            fit: BoxFit.cover, width: 90, height: 90))
+                    : Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(50)),
+                        width: 100,
+                        height: 100,
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+              ),
+            ),
+          ],
+        ),
+        decoration: BoxDecoration(
+          color: defaultTheme.backgroundColor,
+          image: DecorationImage(
+              image: FileImage(File(backgroundImagePath)), fit: BoxFit.cover),
+        ));
   }
 }
