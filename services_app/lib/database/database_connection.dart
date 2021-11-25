@@ -206,6 +206,18 @@ class WorkersDatabase {
     return maps.map((json) => Worker.fromJson(json)).toList();
   }
 
+  Future<int> getUserId(String username) async {
+    final db = await instance.database;
+    final maps =
+        await db.rawQuery("SELECT id FROM user WHERE username = $username");
+
+    if (maps.isNotEmpty) {
+      return User.fromMap(maps.first).id;
+    } else {
+      throw Exception('Username $username not found');
+    }
+  }
+
   Future<Turn> readTurn(int id) async {
     final db = await instance.database;
 
