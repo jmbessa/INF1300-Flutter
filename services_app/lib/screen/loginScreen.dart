@@ -4,6 +4,7 @@ import '../screen/myHome.dart';
 import '../services/response/login_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:services_app/database/database_connection.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../themes.dart';
 
 class LoginPage extends StatefulWidget {
@@ -99,7 +100,8 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
                     padding: const EdgeInsets.all(10.0),
                     child: new TextFormField(
                       onSaved: (val) => _username = val!,
-                      decoration: new InputDecoration(labelText: "Username"),
+                      decoration: new InputDecoration(
+                          labelText: AppLocalizations.of(context)!.usuario),
                     ),
                   ),
                   new Padding(
@@ -109,7 +111,8 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
                       enableSuggestions: false,
                       autocorrect: false,
                       onSaved: (val) => _password = val!,
-                      decoration: new InputDecoration(labelText: "Password"),
+                      decoration: new InputDecoration(
+                          labelText: AppLocalizations.of(context)!.senha),
                     ),
                   )
                 ],

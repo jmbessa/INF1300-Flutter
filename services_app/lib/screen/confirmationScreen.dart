@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../notification_api.dart';
 import '../themes.dart';
 import '../models/workers.dart';
 import '../models/profile.dart';
@@ -7,6 +8,9 @@ import '../widgets/sideMenu.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../database/database_connection.dart';
 import 'loginScreen.dart';
+import 'package:services_app/notification_api.dart';
+
+import 'ordersScreen.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final Worker? worker;
@@ -316,7 +320,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
         ),
         floatingActionButton: FloatingActionButton.extended(
             label: Text(
-              'Enviar',
+              AppLocalizations.of(context)!.enviar,
               style: buttonTheme.textTheme.bodyText1,
             ),
             backgroundColor: buttonTheme.primaryColor,
@@ -331,6 +335,10 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   confirmationAddress,
                   dateText!,
                   globalDropdownValue!);
+              NotificationApi.showNotification(
+                  title: 'Confirmação de agendamento de serviço',
+                  body:
+                      'Confirmando agendamento do serviço de ${worker.category} com o(a) colaborador(a) ${worker.name} para a data $dateText no endereço $confirmationAddress)');
               Navigator.of(context).popUntil((route) => route.isFirst);
             }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

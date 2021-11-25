@@ -32,5 +32,10 @@
     "enviar": "Mandar",
     "confirmaAgendamento": "Confirmación de programación",
     "observacao": "Observación",
-    "preco": "Precio"
+    "preco": "Precio",
+    "aguardaResultado": "Esperando el resultado...",
+    "usuario": "Usuario",
+    "senha": "Contraseña",
+    "camera": "Cámara",
+    "galeria": "Galería"
 }

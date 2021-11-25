@@ -153,9 +153,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: defaultTheme.primaryColor,
         onPressed: () {
-          NotificationApi.showNotification(
-              title: 'Confirmação de agendamento',
-              body: 'Confirmando agendamento do serviço desejado');
           Navigator.pushNamed(context, '/confirmation',
               arguments: {'worker': worker});
         },

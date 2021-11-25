@@ -14,8 +14,6 @@ import 'package:mobx/mobx.dart';
 import 'package:sqflite/sqflite.dart';
 
 class OrdersScreen extends StatefulWidget {
-  OrdersScreen();
-
   @override
   _OrdersScreenState createState() => _OrdersScreenState();
 }

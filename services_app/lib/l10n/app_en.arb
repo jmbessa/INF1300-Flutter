@@ -32,5 +32,10 @@
     "enviar": "Send",
     "confirmaAgendamento": "Schedulling Confirmation",
     "observacao": "Observation",
-    "preco": "Price"
+    "preco": "Price",
+    "aguardaResultado": "Waiting the results...",
+    "usuario": "Username",
+    "senha": "Password",
+    "camera": "Camera",
+    "galeria": "Gallery"
 }

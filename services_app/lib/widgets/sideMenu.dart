@@ -14,8 +14,6 @@ class SideMenu extends StatefulWidget {
   _SideMenuState createState() => _SideMenuState();
 }
 
-WorkersDatabase.instance.
-
 XFile? profileImage;
 String profileImagePath = "assets/materiais-para-pintura.jpg";
 
@@ -85,7 +83,7 @@ class _SideMenuState extends State<SideMenu> {
       builder: (context) => Wrap(children: [
         ListTile(
           leading: Icon(Icons.camera_alt),
-          title: Text('Camera'),
+          title: Text(AppLocalizations.of(context)!.camera),
           onTap: () {
             Navigator.pop(context);
             takeProfilePhoto();
@@ -93,7 +91,7 @@ class _SideMenuState extends State<SideMenu> {
         ),
         ListTile(
           leading: Icon(Icons.photo_album),
-          title: Text('Gallery'),
+          title: Text(AppLocalizations.of(context)!.galeria),
           onTap: () {
             Navigator.pop(context);
             getProfileImage();

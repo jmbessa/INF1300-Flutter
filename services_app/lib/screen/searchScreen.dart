@@ -291,7 +291,8 @@ class _SearchScreenState extends State<SearchScreen> {
       children: [
         Align(
             alignment: Alignment.centerLeft,
-            child: Text("Data", style: defaultTheme.textTheme.bodyText1)),
+            child: Text(AppLocalizations.of(context)!.data,
+                style: defaultTheme.textTheme.bodyText1)),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(

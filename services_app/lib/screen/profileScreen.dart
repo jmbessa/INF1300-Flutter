@@ -149,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "Trabalhos antigos:",
+            AppLocalizations.of(context)!.trabalhosAntigos,
             style: const TextStyle(
                 fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
           ),

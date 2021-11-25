@@ -88,10 +88,6 @@ class MyApp extends StatelessWidget {
           // WorkersDatabase.instance.createCategory(
           //     CategoryObj(4, "Servicos Residenciais", "assets/faz-tudo.jpg"));
 
-          // print("aaaaaa");
-          // WorkersDatabase.instance.uploadFile();
-          // print("bbbbb");
-
           return MaterialApp(
             title: 'Flutter Demo',
             theme: defaultTheme,

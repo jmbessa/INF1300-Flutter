@@ -18,7 +18,7 @@ class WorkersDatabase {
   static Database? _database;
 
   Reference _reference =
-      FirebaseStorage.instance.ref().child('workersBessa11.db');
+      FirebaseStorage.instance.ref().child('workersBessa21.db');
 
   String? _downloadUrl;
 
@@ -29,7 +29,7 @@ class WorkersDatabase {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('workersBessa11.db');
+    _database = await _initDB('workersBessa21.db');
     return _database!;
   }
 
