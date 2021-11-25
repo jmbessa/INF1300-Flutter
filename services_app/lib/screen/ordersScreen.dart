@@ -40,6 +40,29 @@ class _OrdersScreenState extends State<OrdersScreen> {
     }
   }
 
+  void cancelOrder(BuildContext context, int orderId) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Wrap(children: [
+        Text("Deseja Cancelar?"),
+        ListTile(
+          title: Text('Sim'),
+          onTap: () {
+            Navigator.pop(context);
+            WorkersDatabase.instance.deleteOrder(orderId);
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.photo_album),
+          title: Text('Não'),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ]),
+    );
+  }
+
   //final StreamController ctrl = StreamController();
   //final StreamSubscription subscription = ctrl.stream.listen((data) => print('$data'));
 
@@ -81,103 +104,109 @@ class _OrdersScreenState extends State<OrdersScreen> {
     final img = "assets/2318271-icone-do-perfil-do-usuario-grátis-vetor.jpg";
     Future<Worker> worker = WorkersDatabase.instance.readWorker(order.workerId);
     return new GestureDetector(
+        onTap: () async {
+          cancelOrder(context, order.id);
+        },
         child: Container(
-      height: 170,
-      margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(color: defaultTheme.shadowColor, blurRadius: 2.0),
-          ]),
-      child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
-          child: FutureBuilder<Worker>(
-              future: worker,
-              builder: (BuildContext context, AsyncSnapshot<Worker> snapshot) {
-                List<Widget> children;
-                if (snapshot.hasData) {
-                  children = <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          height: 170,
+          margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(color: defaultTheme.shadowColor, blurRadius: 2.0),
+              ]),
+          child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
+              child: FutureBuilder<Worker>(
+                  future: worker,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Worker> snapshot) {
+                    List<Widget> children;
+                    if (snapshot.hasData) {
+                      children = <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              snapshot.data!.name,
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  snapshot.data!.name,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  order.address.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 15, color: Colors.grey),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  order.date.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 15, color: Colors.grey),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Text(
+                                  "\$${order.price!.toStringAsFixed(2)}",
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              order.address.toString(),
-                              style: const TextStyle(
-                                  fontSize: 15, color: Colors.grey),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              order.date.toString(),
-                              style: const TextStyle(
-                                  fontSize: 15, color: Colors.grey),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Text(
-                              "\$${order.price!.toStringAsFixed(2)}",
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                            Image.asset(
+                              img,
+                              height: 120,
                             )
                           ],
                         ),
-                        Image.asset(
-                          img,
-                          height: 120,
+                      ];
+                    } else if (snapshot.hasError) {
+                      children = <Widget>[
+                        const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 60,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Text('Error: ${snapshot.error}'),
                         )
-                      ],
-                    ),
-                  ];
-                } else if (snapshot.hasError) {
-                  children = <Widget>[
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Error: ${snapshot.error}'),
-                    )
-                  ];
-                } else {
-                  children = const <Widget>[
-                    SizedBox(
-                      child: CircularProgressIndicator(),
-                      width: 60,
-                      height: 60,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Awaiting result...'),
-                    )
-                  ];
-                }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: children,
-                  ),
-                );
-              })),
-    ));
+                      ];
+                    } else {
+                      children = const <Widget>[
+                        SizedBox(
+                          child: CircularProgressIndicator(),
+                          width: 60,
+                          height: 60,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 16),
+                          child: Text('Awaiting result...'),
+                        )
+                      ];
+                    }
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: children,
+                      ),
+                    );
+                  })),
+        ));
   }
 
   Widget _buildListOrders(Future<List<Order>> listOrders) {
