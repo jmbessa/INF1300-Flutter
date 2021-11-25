@@ -162,10 +162,23 @@ class WorkersDatabase {
     final db = await instance.database;
 
     final maps = await db.query(tableWorkers,
-        columns: WorkersFields.values, where: '$WorkersFields.id = $id');
+        columns: WorkersFields.values, where: '${WorkersFields.id} = $id');
 
     if (maps.isNotEmpty) {
       return Worker.fromJson(maps.first);
+    } else {
+      throw Exception('ID $id not found');
+    }
+  }
+
+  Future<User> readUser(int id) async {
+    final db = await instance.database;
+
+    final maps = await db.query(tableUser,
+        columns: UserFields.values, where: '${UserFields.id} = $id');
+
+    if (maps.isNotEmpty) {
+      return User.fromMap(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
@@ -242,6 +255,17 @@ class WorkersDatabase {
     final result = await db.query(tableTurn, orderBy: orderBy);
 
     return result.map((json) => Turn.fromJson(json)).toList();
+  }
+
+  Future<List<Order>> readAllOrders(int userId) async {
+    final db = await instance.database;
+
+    // final result =
+    //     await db.rawQuery('SELECT * FROM $tableNotes ORDER BY $orderBy');
+
+    final result = await db.query(tableOrder, where: 'userid = $userId');
+
+    return result.map((json) => Order.fromJson(json)).toList();
   }
 
   Future<List<CategoryObj>> readAllCategories() async {

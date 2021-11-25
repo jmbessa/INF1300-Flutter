@@ -43,6 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index == 2) {
       _scaffoldKey.currentState?.openEndDrawer();
     }
+    if (index == 1) {
+      Navigator.pushNamed(context, '/order');
+    }
   }
 
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -197,7 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         initial = 0;
                       },
                       child: Container(
-                        height: 400,
+                        height: 600,
                         child: GridView.count(
                           crossAxisCount: 2,
                           children:

@@ -6,12 +6,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'language_picker_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../database/database_connection.dart';
 
 class SideMenu extends StatefulWidget {
   SideMenu({Key? key}) : super(key: key);
   @override
   _SideMenuState createState() => _SideMenuState();
 }
+
+WorkersDatabase.instance.
 
 XFile? profileImage;
 String profileImagePath = "assets/materiais-para-pintura.jpg";

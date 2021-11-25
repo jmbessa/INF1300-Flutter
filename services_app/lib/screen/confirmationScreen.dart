@@ -272,67 +272,67 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     var worker = routeData['worker'];
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0),
-        child: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          foregroundColor: Colors.black,
-          leading: BackButton(color: Colors.black),
-          title: Text(
-            AppLocalizations.of(context)!.confirmaAgendamento,
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(25),
-          child: Form(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.fromLTRB(0, 10, 25, 0),
-                  child: SizedBox(
-                    child: Text(
-                      AppLocalizations.of(context)!.insereEndereco,
-                      style: defaultTheme.textTheme.bodyText1,
-                    ),
-                  ),
-                ),
-                _buildAddress(),
-                _buildDate(),
-                _buildTurn(worker, globalDropdownValue),
-                _buildPrice(worker),
-                _buildObservation(),
-                SizedBox(height: 100),
-              ],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50.0),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            foregroundColor: Colors.black,
+            leading: BackButton(color: Colors.black),
+            title: Text(
+              AppLocalizations.of(context)!.confirmaAgendamento,
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-          label: Text(
-            'Enviar',
-            style: buttonTheme.textTheme.bodyText1,
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(25),
+            child: Form(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.fromLTRB(0, 10, 25, 0),
+                    child: SizedBox(
+                      child: Text(
+                        AppLocalizations.of(context)!.insereEndereco,
+                        style: defaultTheme.textTheme.bodyText1,
+                      ),
+                    ),
+                  ),
+                  _buildAddress(),
+                  _buildDate(),
+                  _buildTurn(worker, globalDropdownValue),
+                  _buildPrice(worker),
+                  _buildObservation(),
+                  SizedBox(height: 100),
+                ],
+              ),
+            ),
           ),
-          backgroundColor: buttonTheme.primaryColor,
-          onPressed: () {
-            formKey.currentState!.save();
-            formKey2.currentState!.save();
-            WorkersDatabase.instance.createOrder(
-                1,
-                worker!.id!,
-                observation,
-                worker.price!,
-                confirmationAddress,
-                dateText!,
-                globalDropdownValue!);
-            Navigator.of(context).popUntil((route) => route.isFirst);
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+            label: Text(
+              'Enviar',
+              style: buttonTheme.textTheme.bodyText1,
+            ),
+            backgroundColor: buttonTheme.primaryColor,
+            onPressed: () {
+              formKey.currentState!.save();
+              formKey2.currentState!.save();
+              WorkersDatabase.instance.createOrder(
+                  1,
+                  worker!.id!,
+                  observation,
+                  worker.price!,
+                  confirmationAddress,
+                  dateText!,
+                  globalDropdownValue!);
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            }),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        resizeToAvoidBottomInset: false);
   }
 }
