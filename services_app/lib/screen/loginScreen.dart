@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             resizeToAvoidBottomInset: false);
         break;
       case LoginStatus.signIn:
-        //_id = WorkersDatabase.instance.getUserId(_username);
+        _id = WorkersDatabase.instance.getUserId(_username);
         return MyHomePage(signOut);
     }
   }
