@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
   late String _username, _password;
+  late Future<int> _id;
 
   late LoginResponse _response;
 
@@ -38,14 +39,6 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
         _response.doLogin(_username, _password);
       });
     }
-  }
-
-  Future<int> getId(String username) async {
-    Future<int> id;
-
-    id = WorkersDatabase.instance.getUserId(username);
-
-    return id;
   }
 
   void _showSnackBar(String text) {
@@ -151,12 +144,12 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
             resizeToAvoidBottomInset: false);
         break;
       case LoginStatus.signIn:
+        _id = WorkersDatabase.instance.getUserId(_username);
         return MyHomePage(signOut);
-        break;
     }
   }
 
-  savePref(int value, String user, String pass) async {
+  void savePref(int value, String user, String pass) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       preferences.setInt("value", value);

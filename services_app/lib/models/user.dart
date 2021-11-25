@@ -28,6 +28,7 @@ class User {
       this.backgroundPicture, this.address);
 
   User.fromMap(dynamic obj) {
+    this._id = obj['_id'];
     this._username = obj['username'];
     this._password = obj['password'];
     this.name = obj['name'];
